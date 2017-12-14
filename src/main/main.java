@@ -5,17 +5,49 @@
  */
 package main;
 
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
 /**
  *
  * @author john
  */
-public class main {
+public class main extends Application {
+
+    private Stage stage;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        
+        BorderPane Login = new BorderPane();
+        
+        Scene loginScene = new Scene(Login, 1200, 900);
+        
+        primaryStage.setTitle("Adventura");
+        primaryStage.setScene(loginScene);
+        primaryStage.show();
+        
+    }
+    
+    
+    public static void main(String[] args) {
+        launch(args);
+    }
+    
+    /**
+     * @return the stage
+     */
+    public Stage getStage() {
+        return stage;
+    }
 
     /**
-     * @param args the command line arguments
+     * @param stage the stage to set
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
     
 }
