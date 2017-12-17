@@ -5,11 +5,14 @@
  */
 package main;
 
+import Database.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
@@ -22,57 +25,30 @@ import javafx.stage.Stage;
 public class main extends Application {
 
     private Stage stage;
+    private Connection conn;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        getConnection();
         
+        conn = db.getConnection();
         
-        BorderPane Login = new BorderPane();
+        Parent loginRoot;
+        loginRoot = FXMLLoader.load(getClass().getResource("/GUI/Login.fxml"));
+        Scene loginScene = new Scene(loginRoot, 639, 442);
         
-        Scene loginScene = new Scene(Login, 1200, 900);
-        
-        primaryStage.setTitle("Adventura");
         primaryStage.setScene(loginScene);
+        primaryStage.setTitle("Login to Ticket Portal!");
         primaryStage.show();
+        
         
     }
     
+    public Connection getConnection () {
+        return this.conn;
+    }
     
     public static void main(String[] args) {
         launch(args);
-    }
-    
-    public static Connection getConnection() throws Exception {
-        Connection conn = null;
-        
-        try {
-            String driver = "com.mysql.jdbc.Driver";
-            String dbUrl = "jdbc:mysql://127.0.0.1:3306/";
-            String databaseName = "ticket_portal";
-            String dbUsername = "root";
-            String dbPassword = "";
-            
-            Class.forName(driver);
-            conn = DriverManager.getConnection(dbUrl + databaseName, dbUsername, dbPassword);
-            
-            System.out.println("Connected");
-            
-            return conn;
-            
-        } catch( ClassNotFoundException | NullPointerException | SQLException ex ) {
-            Platform.runLater(() -> {
-                System.out.println(ex.getMessage());
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("DB");
-                alert.setHeaderText("Chyba pripojeni");
-                
-                alert.showAndWait();
-                System.out.println(ex.getMessage());
-            });
-        }
-        
-        return null;
     }
     
     /**
