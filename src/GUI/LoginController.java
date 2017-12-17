@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -88,18 +89,16 @@ public class LoginController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Uspesne prihlaseni");
                 alert.setHeaderText("Gratulujeme, uspesne jste se prihlsil");
-                alert.setContentText("Nyni jste prihlasen jako:" + usernameLogin.getText());
+                alert.setContentText("Nyni jste prihlasen jako: " + usernameLogin.getText());
                 alert.showAndWait();
                 
-                //Zatim nefunkcni zmena stage na novou
+                //zmena na okno kde uz je uzivatel prihlasen
                 Parent loggedRoot;
                 loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/LoggedWindow.fxml"));
                 Scene loggedScene = new Scene(loggedRoot, 900, 700);
-                Stage loggedStage = null;
-                loggedStage.setScene(loggedScene);
-                loggedStage.setTitle("Ticket Portal");
-                loggedStage.show();
-                
+                Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+                currentStage.setScene(loggedScene);
+                currentStage.show();
                 
                 loginSuccess = true;
                 break;
