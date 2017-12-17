@@ -26,9 +26,9 @@
          </font>
       </Label>
       <TextField fx:id="usernameSignUp" layoutX="413.0" layoutY="92.0" promptText="Username" />
+      <PasswordField fx:id="passwordSignUp" layoutX="413.0" layoutY="139.0" promptText="Password" />
       <TextField fx:id="nameSignUp" layoutX="413.0" layoutY="183.0" promptText="Name" />
       <TextField fx:id="surnameSignUp" layoutX="413.0" layoutY="227.0" promptText="Surname" />
-      <PasswordField fx:id="passwordSignUp" layoutX="413.0" layoutY="139.0" promptText="Password" />
       <TextField fx:id="emailSignUp" layoutX="413.0" layoutY="272.0" promptText="E-mail" />
       <Label fx:id="invalidLoginLbl" layoutX="64.0" layoutY="217.0" text="Neplatne prihlasovaci udaje" textAlignment="CENTER" textFill="RED" visible="false">
          <font>
@@ -37,5 +37,6 @@
       </Label>
       <Label fx:id="invalidUsernameLbl" layoutX="420.0" layoutY="117.0" text="*Username je jiz pouzivan" textAlignment="CENTER" textFill="RED" visible="false" />
       <Label fx:id="invalidEmailLbl" layoutX="430.0" layoutY="297.0" text="*E-mail je jiz pouzivan" textAlignment="CENTER" textFill="RED" visible="false" />
+      <Label fx:id="invalidFillingLbl" layoutX="402.0" layoutY="365.0" text="Vsechny pole musi byt vyplneny!" textAlignment="CENTER" textFill="RED" visible="false" />
    </children>
 </AnchorPane>
