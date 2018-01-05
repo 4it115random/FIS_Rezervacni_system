@@ -87,15 +87,15 @@ public class LoginController implements Initializable {
             if ( result.getString("username").equals(usernameLogin.getText()) && result.getString("password").equals(passwordLogin.getText()) ) {
                 //Zobrazeni alertu s uspesnym prihlasenim
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Uspesne prihlaseni");
-                alert.setHeaderText("Gratulujeme, uspesne jste se prihlsil");
-                alert.setContentText("Nyni jste prihlasen jako: " + usernameLogin.getText());
+                alert.setTitle("Úspěšné přihlášení");
+                alert.setHeaderText("Přihlášení proběhlo v pořádku");
+                alert.setContentText("Jste přihlášen jako: " + usernameLogin.getText());
                 alert.showAndWait();
                 
                 //zmena na okno kde uz je uzivatel prihlasen
                 Parent loggedRoot;
                 loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/LoggedWindow.fxml"));
-                Scene loggedScene = new Scene(loggedRoot, 900, 700);
+                Scene loggedScene = new Scene(loggedRoot, 700, 400);
                 Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
                 currentStage.setScene(loggedScene);
                 currentStage.show();
@@ -112,75 +112,12 @@ public class LoginController implements Initializable {
               
     }
     
-    public void SignUp ( ActionEvent event ) throws SQLException {
-        boolean invalidSignUp = false;
-        invalidUsernameLbl.setVisible(false);
-        invalidEmailLbl.setVisible(false);
-        invalidFillingLbl.setVisible(false);
-        
-        //Zkontrolujem, zda jsou vyplneny vsechny pole
-        if ( usernameSignUp.getText().equals("") || 
-             passwordSignUp.getText().equals("") ||
-             nameSignUp.getText().equals("") ||
-             surnameSignUp.getText().equals("") ||
-             emailSignUp.getText().equals("") ) {
-            
-            invalidFillingLbl.setVisible(true);
-        } else {
-            PreparedStatement getUsername = conn.prepareStatement("SELECT username,email FROM osoba");
-            ResultSet result = getUsername.executeQuery();
-            
-            //Zkontrolujem, zda uz v db neni stejny username nebo email
-            while ( result.next() ) {
-                if ( result.getString("username").equals(usernameSignUp.getText()) ) {
-                    invalidUsernameLbl.setVisible(true);
-                    invalidSignUp = true;
-                    break;
-                }
-                if ( result.getString("email").equals(emailSignUp.getText()) ) {
-                    invalidEmailLbl.setVisible(true);
-                    invalidSignUp = true;
-                    break;
-                }
-            }
-            
-            //Vse je v poradku a vlozime noveho uzivatele do databaze
-            if ( invalidSignUp == false ) {
-                
-                //insertnem do db
-                PreparedStatement insertUser = conn.prepareStatement("INSERT INTO osoba (name,surname,username,password,email,rights) VALUES (?,?,?,?,?,0)");
-                insertUser.setString(1, nameSignUp.getText());
-                insertUser.setString(2, surnameSignUp.getText());
-                insertUser.setString(3, usernameSignUp.getText());
-                insertUser.setString(4, passwordSignUp.getText());    //!!ukladani hesla v Plaintextu je sice nejhorsi, ale hashovani dodelam pozdeji
-                insertUser.setString(5, emailSignUp.getText());
-                insertUser.executeUpdate();
-                
-                //skryjeme alerty
-                invalidUsernameLbl.setVisible(false);
-                invalidEmailLbl.setVisible(false);
-                invalidFillingLbl.setVisible(false);
-                
-                //Zobrazeni alertu s uspechem
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Uspesna registrace");
-                alert.setHeaderText("Gratulujeme, uspesne jste se zaregistroval, nyni se muzete prihlasit");
-                alert.showAndWait();
-                
-                //Predvyplnime username v loginu pro pohodli
-                usernameLogin.setText(usernameSignUp.getText());
-                
-                //smazem veci z fieldu
-                usernameSignUp.clear();
-                nameSignUp.clear();
-                surnameSignUp.clear();
-                passwordSignUp.clear();
-                emailSignUp.clear();
-            }
-            
-        }
+    public void SignUp ( ActionEvent event ) throws SQLException, IOException {
+                 Parent loggedRoot;
+                loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/signup.fxml"));
+                Scene loggedScene = new Scene(loggedRoot, 700, 400);
+                Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+                currentStage.setScene(loggedScene);
+                currentStage.show();
     }
-
-    
-    
 }

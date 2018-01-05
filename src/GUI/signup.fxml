@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SignupController">
+   <children>
+      <Label layoutX="300.0" layoutY="14.0" text="Registrace">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Label>
+      <TextField fx:id="usernameSignUp" layoutX="300.0" layoutY="90.0" promptText="Přihlašovací jméno" />
+      <TextField fx:id="passwordSignUp" layoutX="300.0" layoutY="130.0" promptText="Heslo" />
+      <TextField fx:id="nameSignUp" layoutX="300.0" layoutY="170.0" promptText="Jméno" />
+      <TextField fx:id="surnameSignUp" layoutX="300.0" layoutY="210.0" promptText="Příjmení" />
+      <TextField fx:id="emailSignUp" layoutX="300.0" layoutY="250.0" promptText="E-mail" />
+      <Button layoutX="340.0" layoutY="310.0" mnemonicParsing="false" onAction="#SignUp" text="Odeslat" />
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#Return" text="Jít zpět" />
+
+      <Label fx:id="invalidUsernameLbl" layoutX="300.0" layoutY="350.0" text="Přihlašovací jméno je již obsazeno" textAlignment="CENTER" textFill="RED" visible="false" />
+      <Label fx:id="invalidEmailLbl" layoutX="300.0" layoutY="350.0" text="E-mail je již obsazen" textAlignment="CENTER" textFill="RED" visible="false" />
+      <Label fx:id="invalidFillingLbl" layoutX="300.0" layoutY="350.0" text="Všechny pole musí být vyplněny" textAlignment="CENTER" textFill="RED" visible="false" />
+   </children>
+</AnchorPane>

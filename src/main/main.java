@@ -34,10 +34,10 @@ public class main extends Application {
         
         Parent loginRoot;
         loginRoot = FXMLLoader.load(getClass().getResource("/GUI/Login.fxml"));
-        Scene loginScene = new Scene(loginRoot, 639, 442);
+        Scene loginScene = new Scene(loginRoot, 700, 400);
         
         primaryStage.setScene(loginScene);
-        primaryStage.setTitle("Login to Ticket Portal!");
+        primaryStage.setTitle("Systém pro rezervaci a nákup lístků");
         primaryStage.show();
         
         
