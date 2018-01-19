@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.BuyTicketsController">
+   <children>
+      <ImageView fitHeight="388.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/background_theme.jpg" />
+         </image>
+      </ImageView>
+      <ListView layoutX="93.0" layoutY="106.0" prefHeight="169.0" prefWidth="479.0" />
+      <Label layoutX="225.0" layoutY="14.0" text="Nákup lístků" textFill="WHITE">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <Label layoutX="280.0" layoutY="77.0" prefHeight="21.0" prefWidth="43.0" text="Cena" textAlignment="CENTER" textFill="WHITE" />
+      <Label layoutX="449.0" layoutY="77.0" prefHeight="21.0" prefWidth="114.0" text="Počet vstupenek" textAlignment="CENTER" textFill="WHITE" />
+      <Label layoutX="93.0" layoutY="77.0" prefHeight="21.0" prefWidth="107.0" text="Druh vstupenky" textAlignment="CENTER" textFill="WHITE" />
+      <Text layoutX="102.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dospělí" wrappingWidth="57.6708984375" />
+      <Text layoutX="102.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Děti" wrappingWidth="57.6708984375" />
+      <Text layoutX="102.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Studenti (18-26 let)" wrappingWidth="141.6708984375" />
+      <Button layoutX="453.0" layoutY="311.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="92.0" text="Zaplatit" />
+      <Label layoutX="280.0" layoutY="123.0" prefHeight="21.0" prefWidth="58.0" text="230,-" />
+      <Label layoutX="280.0" layoutY="165.0" prefHeight="21.0" prefWidth="58.0" text="100,-" />
+      <Label layoutX="280.0" layoutY="205.0" prefHeight="21.0" prefWidth="58.0" text="150,-" />
+      <TextField layoutX="470.0" layoutY="118.0" prefHeight="31.0" prefWidth="58.0" />
+      <TextField layoutX="470.0" layoutY="200.0" prefHeight="31.0" prefWidth="58.0" />
+      <TextField layoutX="470.0" layoutY="160.0" prefHeight="31.0" prefWidth="58.0" />
+   </children>
+</AnchorPane>
