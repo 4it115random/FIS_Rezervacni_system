@@ -25,6 +25,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import main.main;
 
@@ -63,6 +64,8 @@ public class SignupController implements Initializable {
     private TextField passwordSignUp;
     @FXML
     private TextField emailSignUp;
+    @FXML
+    private ImageView backgroundImg;
 
     /**
      * Initializes the controller class.

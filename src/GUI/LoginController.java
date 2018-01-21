@@ -72,6 +72,7 @@ public class LoginController implements Initializable {
         } catch (Exception ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }    
     
     public void Login ( ActionEvent event ) throws SQLException, IOException  {
