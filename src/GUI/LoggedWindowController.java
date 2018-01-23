@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -25,13 +26,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javax.sql.RowSetEvent;
 import main.main;
 
 /**
@@ -126,6 +133,20 @@ public class LoggedWindowController implements Initializable {
         Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
         currentStage.setScene(loggedScene);
         currentStage.show();
+    }
+    
+    public void eventDetails ( TableColumn.CellEditEvent event )
+    {
+           //     Predstavenie predst = eventsTable.getSelectionModel().getSelectedItem();
+           //     int predstID = predst.getID();
+                String nazev = event.getOldValue().toString();
+        
+        
+                //Testovaci zobrazeni indexu
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Index");
+                alert.setHeaderText("Predstavenie na ktore si klikol ma nazev: " + nazev );                
+                alert.showAndWait();
     }
         
         

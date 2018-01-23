@@ -35,6 +35,9 @@ public class Predstavenie {
     public String getName(){
         return name.get();
     }
+    public Integer getID(){
+        return udalost_id;
+    }
     /*
     public void setName(String name){
         name.set(name);
