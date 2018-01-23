@@ -75,6 +75,7 @@ public class LoginController implements Initializable {
         
     }    
     
+    
     public void Login ( ActionEvent event ) throws SQLException, IOException  {
         
         invalidLoginLbl.setVisible(false);
@@ -96,7 +97,7 @@ public class LoginController implements Initializable {
                 //zmena na okno kde uz je uzivatel prihlasen
                 Parent loggedRoot;
                 loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/LoggedWindow.fxml"));
-                Scene loggedScene = new Scene(loggedRoot, 700, 400);
+                Scene loggedScene = new Scene(loggedRoot, 800, 480);
                 Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
                 currentStage.setScene(loggedScene);
                 currentStage.show();
@@ -116,7 +117,7 @@ public class LoginController implements Initializable {
     public void SignUp ( ActionEvent event ) throws SQLException, IOException {
                  Parent loggedRoot;
                 loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/signup.fxml"));
-                Scene loggedScene = new Scene(loggedRoot, 700, 400);
+                Scene loggedScene = new Scene(loggedRoot, 800, 480);
                 Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
                 currentStage.setScene(loggedScene);
                 currentStage.show();

@@ -60,7 +60,7 @@ public class BuyTicketsController implements Initializable {
     {
                 Parent loggedRoot;
                 loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/EventDetails.fxml"));
-                Scene loggedScene = new Scene(loggedRoot, 700, 400);
+                Scene loggedScene = new Scene(loggedRoot, 800, 480);
                 Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
                 currentStage.setScene(loggedScene);
                 currentStage.show();

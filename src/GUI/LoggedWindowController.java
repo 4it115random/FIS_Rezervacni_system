@@ -77,7 +77,7 @@ public class LoggedWindowController implements Initializable {
         //zmena na okno pro prihlaseni
         Parent loggedRoot;
         loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/Login.fxml"));
-        Scene loggedScene = new Scene(loggedRoot, 700, 400);
+        Scene loggedScene = new Scene(loggedRoot, 800, 480);
         Stage currentStage = (Stage) mItem.getParentPopup().getOwnerWindow();
         currentStage.setScene(loggedScene);
         currentStage.show();
@@ -122,7 +122,7 @@ public class LoggedWindowController implements Initializable {
         //zmena na okno pro prihlaseni
         Parent loggedRoot;
         loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/EventDetails.fxml"));
-        Scene loggedScene = new Scene(loggedRoot, 700, 400);       
+        Scene loggedScene = new Scene(loggedRoot, 800, 480);       
         Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
         currentStage.setScene(loggedScene);
         currentStage.show();

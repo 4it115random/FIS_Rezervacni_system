@@ -15,32 +15,41 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="426.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.LoggedWindowController">
+<AnchorPane id="AnchorPane" maxHeight="480.0" maxWidth="800.0" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.LoggedWindowController">
    <children>
-      <ImageView fitHeight="446.0" fitWidth="703.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="510.0" fitWidth="800.0" layoutY="-1.0" pickOnBounds="true">
          <image>
             <Image url="@../resources/background_theme.jpg" />
          </image>
       </ImageView>
-      <Label layoutX="175.0" layoutY="14.0" text="Přehled aktuálních představení" textFill="WHITE">
+      <Label layoutX="163.0" layoutY="14.0" prefHeight="56.0" prefWidth="475.0" text="Přehled aktuálních představení" textFill="WHITE">
          <font>
-            <Font size="26.0" />
+            <Font name="Cambria" size="33.0" />
          </font>
       </Label>
-      <Separator layoutX="121.0" orientation="VERTICAL" prefHeight="707.0" prefWidth="25.0" />
-      <MenuButton layoutX="8.0" layoutY="61.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="117.0" text="Menu">
+      <Separator layoutX="121.0" orientation="VERTICAL" prefHeight="707.0" prefWidth="34.0" />
+      <MenuButton layoutX="14.0" layoutY="32.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="117.0" text="Menu">
         <items>
           <MenuItem mnemonicParsing="false" text="Správa lístků" />
           <MenuItem fx:id="logOutBtn" mnemonicParsing="false" onAction="#LogOut" text="Odhlášení" />
         </items>
+         <font>
+            <Font size="17.0" />
+         </font>
       </MenuButton>
-      <TableView fx:id="eventsTable" layoutX="146.0" layoutY="74.0" prefHeight="305.0" prefWidth="416.0">
+      <TableView fx:id="eventsTable" layoutX="163.0" layoutY="77.0" prefHeight="319.0" prefWidth="463.0">
         <columns>
-          <TableColumn fx:id="nazevColumn" prefWidth="197.0" text="Název" />
-          <TableColumn fx:id="timeColumn" prefWidth="219.0" text="Čas představení" />
+          <TableColumn fx:id="nazevColumn" prefWidth="220.0" text="Název" />
+          <TableColumn fx:id="timeColumn" prefWidth="242.0" text="Čas představení" />
         </columns>
       </TableView>
-      <Button layoutX="601.0" layoutY="114.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="31.0" prefWidth="102.0" text="Podrobnosti" wrapText="true" />
-      <Button layoutX="601.0" layoutY="74.0" mnemonicParsing="false" onAction="#loadEventsFromDatabase" text="Aktualizovat" />
+      <Button layoutX="646.0" layoutY="133.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="38.0" prefWidth="117.0" text="Podrobnosti" wrapText="true">
+         <font>
+            <Font size="17.0" />
+         </font></Button>
+      <Button layoutX="646.0" layoutY="89.0" mnemonicParsing="false" onAction="#loadEventsFromDatabase" prefHeight="38.0" prefWidth="117.0" text="Aktualizovat">
+         <font>
+            <Font size="17.0" />
+         </font></Button>
    </children>
 </AnchorPane>

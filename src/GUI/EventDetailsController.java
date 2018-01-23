@@ -49,7 +49,7 @@ public class EventDetailsController implements Initializable {
     public void BuyTickets ( ActionEvent event ) throws SQLException, IOException {
                 Parent loggedRoot;
                 loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/BuyTickets.fxml"));
-                Scene loggedScene = new Scene(loggedRoot, 700, 400);
+                Scene loggedScene = new Scene(loggedRoot, 800, 480);
                 Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
                 currentStage.setScene(loggedScene);
                 currentStage.show();
@@ -59,7 +59,7 @@ public class EventDetailsController implements Initializable {
     {
                 Parent loggedRoot;
                 loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/LoggedWindow.fxml"));
-                Scene loggedScene = new Scene(loggedRoot, 700, 400);
+                Scene loggedScene = new Scene(loggedRoot, 800, 480);
                 Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
                 currentStage.setScene(loggedScene);
                 currentStage.show();
