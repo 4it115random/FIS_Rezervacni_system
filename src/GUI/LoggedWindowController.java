@@ -29,6 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -54,7 +55,7 @@ public class LoggedWindowController implements Initializable {
         
     
     @FXML
-    private MenuBar menuBar;
+    private MenuButton menuBar;
     @FXML
     private MenuItem menuItem2;  
     @FXML
@@ -149,5 +150,14 @@ public class LoggedWindowController implements Initializable {
                 alert.showAndWait();
     }
         
-        
+    public void eventAdd ( ActionEvent event ) throws IOException
+    {
+        //zmena na okno pro pridani
+        Parent loggedRoot;
+        loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/EventAdd.fxml"));
+        Scene loggedScene = new Scene(loggedRoot, 800, 480);  
+        Stage currentStage = (Stage) menuBar.getScene().getWindow();
+        currentStage.setScene(loggedScene);
+        currentStage.show();
+    }        
 }
