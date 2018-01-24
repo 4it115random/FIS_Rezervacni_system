@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.EventRemoveController">
+       <children>
+      <ImageView fitHeight="510.0" fitWidth="800.0" layoutY="-1.0" pickOnBounds="true">
+         <image>
+            <Image url="@../resources/background_theme.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="163.0" layoutY="14.0" prefHeight="56.0" prefWidth="475.0" text="Přehled aktuálních představení" textFill="WHITE">
+         <font>
+            <Font name="Cambria" size="33.0" />
+         </font>
+      </Label>
+      <TableView fx:id="eventsTable" editable="true" layoutX="81.0" layoutY="77.0" prefHeight="230.0" prefWidth="465.0">
+        <columns>
+          <TableColumn fx:id="nazevColumn" prefWidth="220.0" text="Název" />
+          <TableColumn fx:id="timeColumn" editable="false" prefWidth="242.0" text="Čas představení" />
+        </columns>
+      </TableView>
+      <Button fx:id="delteBtn" layoutX="589.0" layoutY="154.0" mnemonicParsing="false" onAction="#eventRemove" prefHeight="38.0" prefWidth="117.0" text="Odstránit">
+         <font>
+            <Font size="17.0" />
+         </font></Button>
+      <TextField fx:id="nameTF" layoutX="573.0" layoutY="118.0" />
+      <Label layoutX="573.0" layoutY="77.0" prefHeight="31.0" prefWidth="117.0" text="Zadejte název:" textFill="WHITE">
+         <font>
+            <Font name="Cambria" size="17.0" />
+         </font>
+      </Label>
+      <Button layoutX="2.0" layoutY="1.0" mnemonicParsing="false" onAction="#Return" prefHeight="35.0" prefWidth="109.0" text="Jít zpět">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Button fx:id="updateBtn" layoutX="589.0" layoutY="208.0" mnemonicParsing="false" onAction="#loadEventsFromDatabase" prefHeight="38.0" prefWidth="117.0" text="Aktualizovat">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Button>
+      <Label fx:id="invalidName" layoutX="582.0" layoutY="266.0" prefHeight="31.0" prefWidth="173.0" text="Špatně zadaný název" textFill="RED" visible="false">
+         <font>
+            <Font name="Cambria" size="17.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -29,7 +29,7 @@
         <items>
           <MenuItem mnemonicParsing="false" text="Správa lístků" />
             <MenuItem mnemonicParsing="false" onAction="#eventAdd" text="Přidání představení" />
-            <MenuItem mnemonicParsing="false" text="Odebrání představení" visible="false" />
+            <MenuItem fx:id="menuItem3" mnemonicParsing="false" onAction="#eventRemove" text="Odebrání představení" />
           <MenuItem fx:id="logOutBtn" mnemonicParsing="false" onAction="#LogOut" text="Odhlášení" />
         </items>
          <font>

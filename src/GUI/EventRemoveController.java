@@ -27,46 +27,36 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javax.sql.RowSetEvent;
 import main.main;
 
 /**
  * FXML Controller class
  *
- * @author Jan
+ * @author Marcel
  */
-public class LoggedWindowController implements Initializable {
-
+public class EventRemoveController implements Initializable {
     private Connection conn;
     private main mn;
     private ObservableList<Predstavenie> data;
-        
     
-    @FXML
-    private MenuButton menuBar;
-    @FXML
-    private MenuItem menuItem2;  
-    @FXML
-    private MenuItem menuItem3;
     @FXML
     private TableView<Predstavenie> eventsTable;
     @FXML
     private TableColumn<Predstavenie, String> nazevColumn;
     @FXML
     private TableColumn<Predstavenie, Date> timeColumn;
-    
+    @FXML
+    private TextField nameTF;
+    @FXML
+    private Label invalidName;
     /**
      * Initializes the controller class.
      */
@@ -80,20 +70,6 @@ public class LoggedWindowController implements Initializable {
         }
     }    
     
-    public void LogOut (ActionEvent event ) throws IOException
-    {       
-        MenuItem mItem = (MenuItem) event.getSource();
-        
-        //zmena na okno pro prihlaseni
-        Parent loggedRoot;
-        loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/Login.fxml"));
-        Scene loggedScene = new Scene(loggedRoot, 800, 480);
-        Stage currentStage = (Stage) mItem.getParentPopup().getOwnerWindow();
-        currentStage.setScene(loggedScene);
-        currentStage.show();
-    }
-        
-        
         public void loadEventsFromDatabase(  ) throws SQLException, Exception{
             this.conn = db.getConnection();
             data = FXCollections.observableArrayList();
@@ -109,7 +85,7 @@ public class LoggedWindowController implements Initializable {
             eventsTable.setItems(null);
             eventsTable.setItems(data);
         }
-        
+    
         public void loadEventsFromDatabase( ActionEvent event  ) throws SQLException, Exception{
             this.conn = db.getConnection();
             data = FXCollections.observableArrayList();
@@ -125,53 +101,72 @@ public class LoggedWindowController implements Initializable {
             eventsTable.setItems(null);
             eventsTable.setItems(data);
         }
+      
+        public void eventRemove ( ActionEvent event ) throws SQLException 
+        {
+        boolean spatneUdaje = false;
+        invalidName.setVisible(false);
         
-    public void showDetails (ActionEvent event ) throws IOException
-    {   
-        
-        //zmena na okno pro prihlaseni
-        Parent loggedRoot;
-        loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/EventDetails.fxml"));
-        Scene loggedScene = new Scene(loggedRoot, 800, 480);       
-        Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-        currentStage.setScene(loggedScene);
-        currentStage.show();
+        //Zkontrolujem, zda je vyplneny nazev
+        if ( nameTF.getText().equals("")) 
+        {            
+            invalidName.setVisible(true);
+        } else {
+            PreparedStatement getUdalost = conn.prepareStatement("SELECT name FROM udalost");
+            ResultSet result = getUdalost.executeQuery();
+            
+            //Zkontrolujem, zda v db je dane predstavenie
+            while ( result.next() ) {
+                if ( result.getString("name").equals(nameTF.getText()) ) {                    
+                    spatneUdaje = false;
+                    break;
+                }
+                else
+                {
+                    spatneUdaje = true;
+                    invalidName.setVisible(true);
+                }
+            }
+            
+            //Vse je v poradku a odebereme predstaveni z databaze
+            if ( spatneUdaje == false ) {
+                
+                //insertnem do db
+                PreparedStatement removeUser = conn.prepareStatement("DELETE FROM udalost WHERE name = ?");
+                removeUser.setString(1, nameTF.getText());
+                
+                //Zobrazeni alertu o potvrzeni zmazani                
+                ButtonType anoButt = new ButtonType("Smazat");
+                ButtonType nieButt = new ButtonType("Storno");
+                Alert alert = new Alert(AlertType.NONE, "Opravdu chcete představení zmazat?", anoButt, nieButt);
+                alert.setTitle("Zmazání představení");
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == anoButt) {
+                        try {
+                            removeUser.executeUpdate();
+                            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                            a.setTitle("Úspěch");
+                            a.setHeaderText("Zmazání proběhlo v pořádku");
+                            a.setContentText("Pro aktualizaci představení klikněte na Aktualizovat.");
+                            a.showAndWait();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(EventRemoveController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });               
+            }
+            
+        }
     }
-    
-    public void eventDetails ( TableColumn.CellEditEvent event )
+        
+    public void Return (ActionEvent event ) throws IOException
     {
-           //     Predstavenie predst = eventsTable.getSelectionModel().getSelectedItem();
-           //     int predstID = predst.getID();
-                String nazev = event.getOldValue().toString();
-        
-        
-                //Testovaci zobrazeni indexu
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Index");
-                alert.setHeaderText("Predstavenie na ktore si klikol ma nazev: " + nazev );                
-                alert.showAndWait();
+                Parent loggedRoot;
+                loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/LoggedWindow.fxml"));
+                Scene loggedScene = new Scene(loggedRoot, 800, 480);
+                Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+                currentStage.setScene(loggedScene);
+                currentStage.show();
     }
         
-    public void eventAdd ( ActionEvent event ) throws IOException
-    {
-        //zmena na okno pro pridani
-        Parent loggedRoot;
-        loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/EventAdd.fxml"));
-        Scene loggedScene = new Scene(loggedRoot, 800, 480);  
-        Stage currentStage = (Stage) menuBar.getScene().getWindow();
-        currentStage.setScene(loggedScene);
-        currentStage.show();
-    } 
-    
-    public void eventRemove ( ActionEvent event ) throws IOException
-    {
-        //zmena na okno pro pridani
-        Parent loggedRoot;
-        loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/EventRemove.fxml"));
-        Scene loggedScene = new Scene(loggedRoot, 800, 480);  
-        Stage currentStage = (Stage) menuBar.getScene().getWindow();
-        currentStage.setScene(loggedScene);
-        currentStage.show();
-    }  
-    
 }

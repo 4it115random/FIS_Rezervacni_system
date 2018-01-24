@@ -85,11 +85,11 @@ public class EventAddController implements Initializable {
         int pocet = stringToInt(pocetTF.getText());
         int misto = stringToInt(adresaTF.getText());
         
-        //Zkontrolujem, zda jsou vyplneny vsechny pole
+        //Zkontrolujem, zda jsou spravne vyplneny vsechny pole
         if ( nazevTF.getText().equals("") ||
-             adresaTF.getText().equals("") || 
-             cenaTF.getText().equals("") || 
-             pocetTF.getText().equals("") ||
+             adresaTF.getText().equals("") || misto<=0 ||
+             cenaTF.getText().equals("") || cena<=0 ||
+             pocetTF.getText().equals("") || pocet<=0 ||
              popisTF.getText().equals("")) 
         {            
             invalidData.setVisible(true);
