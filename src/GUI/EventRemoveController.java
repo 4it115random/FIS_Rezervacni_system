@@ -87,6 +87,7 @@ public class EventRemoveController implements Initializable {
         }
     
         public void loadEventsFromDatabase( ActionEvent event  ) throws SQLException, Exception{
+            invalidName.setVisible(false);
             this.conn = db.getConnection();
             data = FXCollections.observableArrayList();
             ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
@@ -130,7 +131,7 @@ public class EventRemoveController implements Initializable {
             
             //Vse je v poradku a odebereme predstaveni z databaze
             if ( spatneUdaje == false ) {
-                
+                invalidName.setVisible(false);
                 //insertnem do db
                 PreparedStatement removeUser = conn.prepareStatement("DELETE FROM udalost WHERE name = ?");
                 removeUser.setString(1, nameTF.getText());
