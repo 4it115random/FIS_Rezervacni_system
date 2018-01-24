@@ -38,11 +38,11 @@ public class Predstavenie {
     public Integer getID(){
         return udalost_id;
     }
-    /*
-    public void setName(String name){
-        name.set(name);
+    
+    public void setName(String nName){
+        name.set(nName);
     }
-*/
+
     
     public Date getDatum(){
         return datum;

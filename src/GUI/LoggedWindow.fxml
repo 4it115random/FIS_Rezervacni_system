@@ -27,7 +27,7 @@
       <Separator layoutX="121.0" orientation="VERTICAL" prefHeight="707.0" prefWidth="34.0" />
       <MenuButton fx:id="menuBar" layoutX="14.0" layoutY="32.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="117.0" text="Menu">
         <items>
-          <MenuItem mnemonicParsing="false" text="Správa lístků" />
+          <MenuItem mnemonicParsing="false" onAction="#editTickets" text="Správa lístků" />
             <MenuItem mnemonicParsing="false" onAction="#eventAdd" text="Přidání představení" />
             <MenuItem fx:id="menuItem3" mnemonicParsing="false" onAction="#eventRemove" text="Odebrání představení" />
           <MenuItem fx:id="logOutBtn" mnemonicParsing="false" onAction="#LogOut" text="Odhlášení" />

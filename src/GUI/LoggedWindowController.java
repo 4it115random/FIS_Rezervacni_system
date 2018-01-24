@@ -151,7 +151,18 @@ public class LoggedWindowController implements Initializable {
                 alert.setHeaderText("Predstavenie na ktore si klikol ma nazev: " + nazev );                
                 alert.showAndWait();
     }
-        
+ 
+    public void editTickets ( ActionEvent event ) throws IOException
+    {
+        //zmena na okno pro pridani
+        Parent loggedRoot;
+        loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/EditTickets.fxml"));
+        Scene loggedScene = new Scene(loggedRoot, 800, 480);  
+        Stage currentStage = (Stage) menuBar.getScene().getWindow();
+        currentStage.setScene(loggedScene);
+        currentStage.show();
+    } 
+    
     public void eventAdd ( ActionEvent event ) throws IOException
     {
         //zmena na okno pro pridani
