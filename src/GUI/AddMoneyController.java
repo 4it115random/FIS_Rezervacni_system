@@ -66,20 +66,17 @@ public class AddMoneyController implements Initializable {
             result.next();
             
             int newValue = result.getInt("money") + Integer.parseInt(money);
-            
-            System.out.println(newValue);
-            
             PreparedStatement updateUser = conn.prepareStatement("UPDATE osoba SET money = ? WHERE osoba_id = ?");
-            getUser.setInt(1, newValue);
-            getUser.setInt(2, GlobalLoggedUser.userID);
+            updateUser.setInt(1, newValue);
+            updateUser.setInt(2, GlobalLoggedUser.userID);
             updateUser.executeUpdate();
 
-//            Parent loggedRoot;
-//            loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/LoggedWindow.fxml"));
-//            Scene loggedScene = new Scene(loggedRoot, 800, 480);
-//            Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
-//            currentStage.setScene(loggedScene);
-//            currentStage.show();
+            Parent loggedRoot;
+            loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/LoggedWindow.fxml"));
+            Scene loggedScene = new Scene(loggedRoot, 800, 480);
+            Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+            currentStage.setScene(loggedScene);
+            currentStage.show();
             
             
         } else {
