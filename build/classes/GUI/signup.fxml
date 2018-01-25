@@ -24,7 +24,7 @@
          </font>
       </Label>
       <TextField fx:id="usernameSignUp" layoutX="307.0" layoutY="140.0" prefHeight="35.0" prefWidth="200.0" promptText="Přihlašovací jméno" />
-      <TextField fx:id="passwordSignUp" layoutX="307.0" layoutY="180.0" prefHeight="35.0" prefWidth="200.0" promptText="Heslo" />
+      <PasswordField fx:id="passwordSignUp" layoutX="307.0" layoutY="180.0" prefHeight="35.0" prefWidth="200.0" promptText="Heslo" />
       <TextField fx:id="nameSignUp" layoutX="307.0" layoutY="220.0" prefHeight="35.0" prefWidth="200.0" promptText="Jméno" />
       <TextField fx:id="surnameSignUp" layoutX="307.0" layoutY="260.0" prefHeight="35.0" prefWidth="200.0" promptText="Příjmení" />
       <TextField fx:id="emailSignUp" layoutX="307.0" layoutY="300.0" prefHeight="35.0" prefWidth="200.0" promptText="E-mail" />
@@ -34,5 +34,6 @@
       <Label fx:id="invalidUsernameLbl" layoutX="240.0" layoutY="350.0" text="Přihlašovací jméno je již obsazeno" textAlignment="CENTER" textFill="RED" visible="false" />
       <Label fx:id="invalidEmailLbl" layoutX="280.0" layoutY="350.0" text="E-mail je již obsazen" textAlignment="CENTER" textFill="RED" visible="false" />
       <Label fx:id="invalidFillingLbl" layoutX="240.0" layoutY="350.0" text="Všechny pole musí být vyplněny" textAlignment="CENTER" textFill="RED" visible="false" />
+      <Label fx:id="badFormEmail" layoutX="520.0" layoutY="361.0" text="Špatný tvar emailu" textFill="RED" visible="false" />
    </children>
 </AnchorPane>

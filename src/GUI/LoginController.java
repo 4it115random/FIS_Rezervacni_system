@@ -8,8 +8,11 @@ package GUI;
 import Database.db;
 import implementation.GlobalLoggedUser;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import javafx.event.ActionEvent;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -77,7 +80,7 @@ public class LoginController implements Initializable {
     }    
     
     
-    public void Login ( ActionEvent event ) throws SQLException, IOException  {
+    public void Login ( ActionEvent event ) throws SQLException, IOException, NoSuchAlgorithmException  {
         
         invalidLoginLbl.setVisible(false);
         boolean loginSuccess = false;
@@ -87,7 +90,7 @@ public class LoginController implements Initializable {
             
         //Zkontrolujem, zda jsou prihlasovaci udaje v db
         while ( result.next() ) {
-            if ( result.getString("username").equals(usernameLogin.getText()) && result.getString("password").equals(passwordLogin.getText()) ) {
+            if ( result.getString("username").equals(usernameLogin.getText()) && result.getString("password").equals(hashPasswd(passwordLogin)) ) {
                 //Zobrazeni alertu s uspesnym prihlasenim
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Úspěšné přihlášení");
@@ -117,6 +120,27 @@ public class LoginController implements Initializable {
             invalidLoginLbl.setVisible(true);
         }
               
+    }
+    
+    /**
+     * Funkce zahešuje heslo, které získá z PasswordFieldu 
+     * 
+     * @param passwordLogin
+     * @return passHash
+     * @throws java.security.NoSuchAlgorithmException
+     * @throws java.io.UnsupportedEncodingException
+     */
+    public String hashPasswd(TextField passwordLogin) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        String passwd = passwordLogin.getText();
+        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+        byte[] passBytes = passwd.getBytes();
+        byte[] passHash = sha256.digest(passBytes);
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < passHash.length; i++) {
+            sb.append(Integer.toString((passHash[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        String hashString = sb.toString();
+        return hashString;
     }
     
     public void SignUp ( ActionEvent event ) throws SQLException, IOException {

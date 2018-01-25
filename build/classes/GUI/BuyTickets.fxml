@@ -35,15 +35,15 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Text layoutX="101.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dospělí" wrappingWidth="92.0">
+      <Text fx:id="dospeliLbl1" layoutX="101.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="dospely" wrappingWidth="92.0">
          <font>
             <Font size="18.0" />
          </font></Text>
-      <Text layoutX="102.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Děti" wrappingWidth="57.6708984375">
+      <Text fx:id="detiLbl1" layoutX="102.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="detsky" wrappingWidth="57.6708984375">
          <font>
             <Font size="18.0" />
          </font></Text>
-      <Text layoutX="102.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Studenti (18-26 let)" wrappingWidth="154.0">
+      <Text fx:id="studentiLbl1" layoutX="102.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="studentsky" wrappingWidth="154.0">
          <font>
             <Font size="18.0" />
          </font></Text>
@@ -66,5 +66,6 @@
       <Button layoutX="3.0" layoutY="5.0" mnemonicParsing="false" onAction="#Return" prefHeight="35.0" prefWidth="109.0" text="Jít zpět" />
       <Label fx:id="notFilledLbl" layoutX="586.0" layoutY="441.0" text="Nevyplnené množství lístků" textFill="RED" visible="false" />
       <Label fx:id="invalidAmountLbl" layoutX="562.0" layoutY="433.0" text="Dané množství není možno zakoupit" textFill="RED" visible="false" />
+      <Label fx:id="noMoneyLb1" layoutX="616.0" layoutY="433.0" prefHeight="17.0" prefWidth="165.0" text="Nedostatek peněz" textFill="RED" visible="false" />
    </children>
 </AnchorPane>

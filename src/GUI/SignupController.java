@@ -7,8 +7,11 @@ package GUI;
 
 import Database.db;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import javafx.event.ActionEvent;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -66,6 +69,8 @@ public class SignupController implements Initializable {
     private TextField emailSignUp;
     @FXML
     private ImageView backgroundImg;
+    @FXML
+    private Label badFormEmail;
 
     /**
      * Initializes the controller class.
@@ -79,21 +84,27 @@ public class SignupController implements Initializable {
         }
     }    
     
-    public void SignUp ( ActionEvent event ) throws SQLException, IOException {
+    public void SignUp ( ActionEvent event ) throws SQLException, IOException, NoSuchAlgorithmException {
         boolean invalidSignUp = false;
         invalidUsernameLbl.setVisible(false);
         invalidEmailLbl.setVisible(false);
         invalidFillingLbl.setVisible(false);
+        badFormEmail.setVisible(false);
         
         //Zkontrolujem, zda jsou vyplneny vsechny pole
         if ( usernameSignUp.getText().equals("") || 
              passwordSignUp.getText().equals("") ||
              nameSignUp.getText().equals("") ||
              surnameSignUp.getText().equals("") ||
-             emailSignUp.getText().equals("") ) {
+             emailSignUp.getText().equals("")) {
             
             invalidFillingLbl.setVisible(true);
+        
+        // Pokrocilejsie kontroly pomocou regularnych vyrazov
+        } else if (! emailSignUp.getText().matches("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")) {
+            badFormEmail.setVisible(true);
         } else {
+            
             PreparedStatement getUsername = conn.prepareStatement("SELECT username,email FROM osoba");
             ResultSet result = getUsername.executeQuery();
             
@@ -119,7 +130,7 @@ public class SignupController implements Initializable {
                 insertUser.setString(1, nameSignUp.getText());
                 insertUser.setString(2, surnameSignUp.getText());
                 insertUser.setString(3, usernameSignUp.getText());
-                insertUser.setString(4, passwordSignUp.getText());    //!!ukladani hesla v Plaintextu je sice nejhorsi, ale hashovani dodelam pozdeji
+                insertUser.setString(4, hashPasswd(passwordSignUp));    //!!ukladani hesla v Plaintextu je sice nejhorsi, ale hashovani dodelam pozdeji
                 insertUser.setString(5, emailSignUp.getText());
                 insertUser.executeUpdate();
                 
@@ -153,6 +164,25 @@ public class SignupController implements Initializable {
             }
             
         }
+    }
+    /**
+     * Funkce zahešuje heslo, které získá z PasswordFieldu 
+     * 
+     * @param passwordSignUp
+     * @return passHash
+     * @throws java.security.NoSuchAlgorithmException
+     */
+    public String hashPasswd(TextField passwordSignUp) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        String passwd = passwordSignUp.getText();
+        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+        byte[] passBytes = passwd.getBytes();
+        byte[] passHash = sha256.digest(passBytes);
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < passHash.length; i++) {
+            sb.append(Integer.toString((passHash[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        String hashString = sb.toString();
+        return hashString;
     }
 
     public void Return (ActionEvent event ) throws IOException
