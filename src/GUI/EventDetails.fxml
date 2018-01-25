@@ -43,22 +43,22 @@
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Label fx:id="nazevLbl" layoutX="202.0" layoutY="98.0" text="naz" textFill="WHITE">
+      <Label fx:id="nazevLbl2" layoutX="202.0" layoutY="98.0" text="naz" textFill="WHITE">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <Label fx:id="adresaLbl" layoutX="203.0" layoutY="141.0" text="adr" textFill="WHITE">
+      <Label fx:id="adresaLbl2" layoutX="203.0" layoutY="141.0" text="adr" textFill="WHITE">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <Label fx:id="terminLbl" layoutX="204.0" layoutY="182.0" text="Ter" textFill="WHITE">
+      <Label fx:id="terminLbl2" layoutX="204.0" layoutY="182.0" text="Ter" textFill="WHITE">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <Label fx:id="popisLbl" layoutX="202.0" layoutY="226.0" text="Popis" textFill="WHITE">
+      <Label fx:id="popisLbl2" layoutX="202.0" layoutY="226.0" text="Popis" textFill="WHITE">
          <font>
             <Font size="22.0" />
          </font>

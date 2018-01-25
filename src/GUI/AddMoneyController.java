@@ -6,8 +6,10 @@
 package GUI;
 
 import Database.db;
+import GUI.LoginController;
 import implementation.GlobalLoggedUser;
 import implementation.Predstavenie;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -97,5 +99,16 @@ public class AddMoneyController implements Initializable {
         return false;  
       }  
       return true;  
+    }
+    
+        public void Return (ActionEvent event ) throws IOException
+    {
+                //zmena na okno pro prihlaseni
+                Parent loggedRoot;
+                loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/LoggedWindow.fxml"));
+                Scene loggedScene = new Scene(loggedRoot, 800, 480);
+                Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+                currentStage.setScene(loggedScene);
+                currentStage.show();
     }
 }

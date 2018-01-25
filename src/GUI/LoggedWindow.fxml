@@ -42,10 +42,6 @@
           <TableColumn fx:id="timeColumn" editable="false" prefWidth="242.0" text="Čas představení" />
         </columns>
       </TableView>
-      <Button layoutX="646.0" layoutY="133.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="38.0" prefWidth="117.0" text="Podrobnosti" wrapText="true">
-         <font>
-            <Font size="17.0" />
-         </font></Button>
       <Button layoutX="646.0" layoutY="89.0" mnemonicParsing="false" onAction="#loadEventsFromDatabase" prefHeight="38.0" prefWidth="117.0" text="Aktualizovat">
          <font>
             <Font size="17.0" />

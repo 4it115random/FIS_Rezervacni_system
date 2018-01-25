@@ -157,10 +157,7 @@ public class LoggedWindowController implements Initializable {
     }
         
     public void showDetails (ActionEvent event ) throws IOException
-    {   
-        //TADY MI PROSIM DO TOHO ULOZ ID TE UDALOSTI KTERA JE VYBRANA
-        GlobalLoggedUser.eventID = 0;
-        
+    {           
         //zmena na okno pro prihlaseni
         Parent loggedRoot;
         loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/EventDetails.fxml"));
@@ -170,18 +167,25 @@ public class LoggedWindowController implements Initializable {
         currentStage.show();
     }
     
-    public void eventDetails ( TableColumn.CellEditEvent event )
+    public void eventDetails ( TableColumn.CellEditEvent event ) throws SQLException,IOException
     {
    //     Predstavenie predst = eventsTable.getSelectionModel().getSelectedItem();
    //     int predstID = predst.getID();
         String nazev = event.getOldValue().toString();
 
-
-        //Testovaci zobrazeni indexu
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Index");
-        alert.setHeaderText("Predstavenie na ktore si klikol ma nazev: " + nazev );                
-        alert.showAndWait();
+        PreparedStatement getUser = conn.prepareStatement("SELECT udalost_id FROM udalost WHERE name LIKE ?");
+        getUser.setString(1, nazev);
+        ResultSet result = getUser.executeQuery();
+        while ( result.next() ) {
+        GlobalLoggedUser.eventID = result.getInt("udalost_id");
+        }
+        
+        Parent loggedRoot;
+        loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/EventDetails.fxml"));
+        Scene loggedScene = new Scene(loggedRoot, 800, 480);       
+        Stage currentStage = (Stage) menuBar.getScene().getWindow();
+        currentStage.setScene(loggedScene);
+        currentStage.show();
     }
  
     public void editTickets ( ActionEvent event ) throws IOException
