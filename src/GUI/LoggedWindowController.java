@@ -111,9 +111,9 @@ public class LoggedWindowController implements Initializable {
         
         result.next();
         
+        //Uprava lablu na username a zustatek penez
         WcLbl.setText("Vítejte: " + GlobalLoggedUser.userUsername);
-        
-        ZsLbl.setText(Integer.toString(result.getInt("money")));
+        ZsLbl.setText(Integer.toString(result.getInt("money")) + " Kč,-");
         
         data = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
@@ -147,7 +147,7 @@ public class LoggedWindowController implements Initializable {
     
     public void addMoney (ActionEvent event ) throws IOException
     {   
-        //zmena na okno pro prihlaseni
+        //zmena na okno pro pridani penez
         Parent loggedRoot;
         loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/addMoney.fxml"));
         Scene loggedScene = new Scene(loggedRoot, 800, 480);       

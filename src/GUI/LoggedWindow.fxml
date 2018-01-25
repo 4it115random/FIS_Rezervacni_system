@@ -60,7 +60,7 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <Label fx:id="ZsLbl" alignment="CENTER" layoutX="66.0" layoutY="74.0" text="0" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="ZsLbl" alignment="CENTER" layoutX="43.0" layoutY="74.0" text="200 kc,-" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
