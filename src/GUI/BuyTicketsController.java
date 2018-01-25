@@ -116,7 +116,7 @@ public class BuyTicketsController implements Initializable {
                     // Priradime osobu k predstaveniu podla poctu nakupenych listkov
  //                   for (int i= 0; i<listkyCelkovo;i++)
  //                   {
-                    PreparedStatement insertTicket = conn.prepareStatement("INSERT INTO rezervace (udalost_udalost_id,osoba_osoba_id) VALUES (?,?)");
+                    PreparedStatement insertTicket = conn.prepareStatement("INSERT INTO rezervace (udalost_id,osoba_id) VALUES (?,?)");
                     insertTicket.setInt(1, udalostID);
                     insertTicket.setInt(2, kupujuciID);
                     insertTicket.executeUpdate();

@@ -115,9 +115,9 @@ public class EditTicketsController implements Initializable {
             //Nastavenie hodnot do mojej tabulky
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             dateColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
-            noteColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-            nameColumn.setCellFactory(TextFieldTableCell.<Predstavenie>forTableColumn());
-            nameColumn.setOnEditCommit(
+            noteColumn.setCellValueFactory(new PropertyValueFactory<>("note"));
+            noteColumn.setCellFactory(TextFieldTableCell.<Predstavenie>forTableColumn());
+            noteColumn.setOnEditCommit(
             (CellEditEvent<Predstavenie, String> t) -> {
                 ((Predstavenie) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())

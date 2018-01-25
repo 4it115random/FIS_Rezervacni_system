@@ -6,6 +6,8 @@
 package GUI;
 
 import Database.db;
+import implementation.GlobalLoggedUser;
+import implementation.Predstavenie;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -19,6 +21,7 @@ import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,7 +77,7 @@ public class EventAddController implements Initializable {
     }    
     
     public void eventAdd ( ActionEvent event ) throws SQLException, IOException {
-        boolean spatneUdaje = false;
+        boolean spatneUdaje = true;
         invalidData.setVisible(false);
         int i = 0;
         LocalDate localDate = terminTF.getValue();
@@ -83,7 +86,22 @@ public class EventAddController implements Initializable {
         java.sql.Date sqlStartDate = new java.sql.Date(utilStartDate.getTime());    
         int cena = stringToInt(cenaTF.getText());
         int pocet = stringToInt(pocetTF.getText());
-        int misto = stringToInt(adresaTF.getText());
+        String mistoNazev = adresaTF.getText();
+        String popis = popisTF.getText();
+        int misto = 0;
+        
+        //Zkontrolujem, ci nazev daneho mista existuje
+        PreparedStatement getID = conn.prepareStatement("SELECT * FROM zarizeni");
+        ResultSet res = getID.executeQuery();
+                       
+            while ( res.next() ) {
+                if ( res.getString("name").equals(mistoNazev) ) {                    
+                    misto = res.getInt("zarizeni_id");
+                    spatneUdaje = false;
+                    break;                    
+                }
+            }
+        
         
         //Zkontrolujem, zda jsou spravne vyplneny vsechny pole
         if ( nazevTF.getText().equals("") ||
@@ -111,16 +129,16 @@ public class EventAddController implements Initializable {
             if ( spatneUdaje == false ) {
                 
                 //insertnem do db
-                PreparedStatement insertUser = conn.prepareStatement("INSERT INTO udalost (udalost_id,name,datum,available_seats,ticket_price,zarizeni_zarizeni_id,restriction) VALUES (?,?,?,?,?,?,0)");
+                PreparedStatement insertUser = conn.prepareStatement("INSERT INTO udalost (udalost_id,name,datum,available_seats,zarizeni_id,popis) VALUES (?,?,?,?,?,?)");
                 insertUser.setInt(1, i+1);
                 insertUser.setString(2, nazevTF.getText());
                 insertUser.setDate(3, sqlStartDate);
                 insertUser.setInt(4, pocet);
-                insertUser.setInt(5, cena);
-                insertUser.setInt(6, misto);                
+                // misto ma byt cez join
+                insertUser.setInt(5, misto); 
+                insertUser.setString(6, popis);
                 insertUser.executeUpdate();
-                
-                
+         
                 //Zobrazeni alertu s uspechem
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Úspešné přidání události");

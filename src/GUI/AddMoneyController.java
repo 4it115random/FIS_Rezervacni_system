@@ -64,7 +64,6 @@ public class AddMoneyController implements Initializable {
             PreparedStatement getUser = conn.prepareStatement("SELECT osoba_id,money FROM osoba WHERE osoba_id LIKE ?");
             getUser.setInt(1, GlobalLoggedUser.userID);
             ResultSet result = getUser.executeQuery();
-
             result.next();
             
             int newValue = result.getInt("money") + Integer.parseInt(money);
