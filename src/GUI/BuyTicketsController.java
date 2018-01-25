@@ -6,6 +6,7 @@
 package GUI;
 
 import Database.db;
+import implementation.GlobalLoggedUser;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -25,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.main;
 
@@ -52,7 +54,13 @@ public class BuyTicketsController implements Initializable {
     @FXML
     private Label detiLbl;
     @FXML
-    private Label studentiLbl;    
+    private Label studentiLbl; 
+    @FXML
+    private Text dospeliLbl1;
+    @FXML
+    private Text detiLbl1;
+    @FXML
+    private Text studentiLbl1;
     @FXML
     private Label notFilledLbl;
     @FXML
@@ -66,11 +74,46 @@ public class BuyTicketsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             this.conn = db.getConnection();
+            changeLabels();
         } catch (Exception ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
       
+        public void changeLabels() throws SQLException, IOException {
+            /*
+        PreparedStatement r = conn.prepareStatement("SELECT cenova_zona_id FROM ma WHERE udalost_id LIKE ?");
+        r.setInt(1, GlobalLoggedUser.eventID);        
+        ResultSet result1 = r.executeQuery();       
+        int czID = result1.getInt("cenova_zona_id");
+        
+        
+        
+        while ( result1.next() ) {        
+
+                PreparedStatement r2 = conn.prepareStatement("SELECT price,name FROM cenova_zona WHERE cenova_zona_id LIKE ?");
+                r2.setInt(1, czID);        
+                ResultSet result2 = r2.executeQuery();
+                
+                while ( result2.next() ) {
+                if ( result2.getString("name").equals(dospeliLbl1.getText()) )
+                {
+                    dospeliLbl.setText(result2.getString("price"));
+                }
+                if ( result2.getString("name").equals(detiLbl1.getText()) )
+                {
+                    detiLbl.setText(result2.getString("price"));
+                }
+                if ( result2.getString("name").equals(studentiLbl1.getText()) )
+                {
+                    studentiLbl.setText(result2.getString("price"));
+                }
+                }
+            }
+            */
+    }
+    
+    
     
     public void Return (ActionEvent event ) throws IOException
     {

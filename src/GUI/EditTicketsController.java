@@ -44,8 +44,7 @@ import main.main;
 public class EditTicketsController implements Initializable {
         private Connection conn;
         private main mn;
-        
-            private ObservableList<Predstavenie> data;
+        private ObservableList<Predstavenie> data;
     
     @FXML
     private TableView<Predstavenie> eventsTable;
