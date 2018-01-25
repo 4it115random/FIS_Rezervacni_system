@@ -6,6 +6,7 @@
 package GUI;
 
 import Database.db;
+import implementation.GlobalLoggedUser;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import java.net.URL;
@@ -81,7 +82,7 @@ public class LoginController implements Initializable {
         invalidLoginLbl.setVisible(false);
         boolean loginSuccess = false;
         
-        PreparedStatement getUser = conn.prepareStatement("SELECT username,password FROM osoba");
+        PreparedStatement getUser = conn.prepareStatement("SELECT osoba_id,username,password FROM osoba");
         ResultSet result = getUser.executeQuery();
             
         //Zkontrolujem, zda jsou prihlasovaci udaje v db
@@ -93,6 +94,10 @@ public class LoginController implements Initializable {
                 alert.setHeaderText("Přihlášení proběhlo v pořádku");
                 alert.setContentText("Jste přihlášen jako: " + usernameLogin.getText());
                 alert.showAndWait();
+                
+                //ulozeni do globalnich promennych
+                GlobalLoggedUser.userID = result.getInt("osoba_id");
+                GlobalLoggedUser.userUsername = result.getString("username");
                 
                 //zmena na okno kde uz je uzivatel prihlasen
                 Parent loggedRoot;

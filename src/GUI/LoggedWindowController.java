@@ -6,6 +6,7 @@
 package GUI;
 
 import Database.db;
+import implementation.GlobalLoggedUser;
 import implementation.Predstavenie;
 import java.io.IOException;
 import java.net.URL;
@@ -55,6 +56,10 @@ public class LoggedWindowController implements Initializable {
         
     
     @FXML
+    private Label ZsLbl;
+    @FXML
+    private Label WcLbl;
+    @FXML
     private MenuButton menuBar;
     @FXML
     private MenuItem menuItem2;  
@@ -72,6 +77,7 @@ public class LoggedWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         try {
             this.conn = db.getConnection();
             loadEventsFromDatabase();
@@ -84,6 +90,9 @@ public class LoggedWindowController implements Initializable {
     {       
         MenuItem mItem = (MenuItem) event.getSource();
         
+        //vymazani global. prom.
+        GlobalLoggedUser.removeData();
+        
         //zmena na okno pro prihlaseni
         Parent loggedRoot;
         loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/Login.fxml"));
@@ -94,37 +103,58 @@ public class LoggedWindowController implements Initializable {
     }
         
         
-        public void loadEventsFromDatabase(  ) throws SQLException, Exception{
-            this.conn = db.getConnection();
-            data = FXCollections.observableArrayList();
-            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
-            while (rs.next()){
-                data.add(new Predstavenie(rs.getString(2),rs.getDate(3)));
-            }
-            
-            //Nastavenie hodnot do mojej tabulky
-            nazevColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-            timeColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
-            
-            eventsTable.setItems(null);
-            eventsTable.setItems(data);
-        }
+    public void loadEventsFromDatabase(  ) throws SQLException, Exception{
         
-        public void loadEventsFromDatabase( ActionEvent event  ) throws SQLException, Exception{
-            this.conn = db.getConnection();
-            data = FXCollections.observableArrayList();
-            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
-            while (rs.next()){
-                data.add(new Predstavenie(rs.getString(2),rs.getDate(3)));
-            }
-            
-            //Nastavenie hodnot do mojej tabulky
-            nazevColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-            timeColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
-            
-            eventsTable.setItems(null);
-            eventsTable.setItems(data);
+        PreparedStatement getUser = conn.prepareStatement("SELECT osoba_id,username,password,money FROM osoba WHERE osoba_id LIKE ?");
+        getUser.setInt(1, GlobalLoggedUser.userID);
+        ResultSet result = getUser.executeQuery();
+        
+        result.next();
+        
+        WcLbl.setText("Vítejte: " + GlobalLoggedUser.userUsername);
+        
+        ZsLbl.setText(Integer.toString(result.getInt("money")));
+        
+        data = FXCollections.observableArrayList();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
+        while (rs.next()){
+            data.add(new Predstavenie(rs.getString(2),rs.getDate(3)));
         }
+
+        //Nastavenie hodnot do mojej tabulky
+        nazevColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        timeColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
+
+        eventsTable.setItems(null);
+        eventsTable.setItems(data);
+    }
+
+    public void loadEventsFromDatabase( ActionEvent event  ) throws SQLException, Exception{
+        this.conn = db.getConnection();
+        data = FXCollections.observableArrayList();
+        ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
+        while (rs.next()){
+            data.add(new Predstavenie(rs.getString(2),rs.getDate(3)));
+        }
+
+        //Nastavenie hodnot do mojej tabulky
+        nazevColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        timeColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
+
+        eventsTable.setItems(null);
+        eventsTable.setItems(data);
+    }
+    
+    public void addMoney (ActionEvent event ) throws IOException
+    {   
+        //zmena na okno pro prihlaseni
+        Parent loggedRoot;
+        loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/addMoney.fxml"));
+        Scene loggedScene = new Scene(loggedRoot, 800, 480);       
+        Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+        currentStage.setScene(loggedScene);
+        currentStage.show();
+    }
         
     public void showDetails (ActionEvent event ) throws IOException
     {   
@@ -140,16 +170,16 @@ public class LoggedWindowController implements Initializable {
     
     public void eventDetails ( TableColumn.CellEditEvent event )
     {
-           //     Predstavenie predst = eventsTable.getSelectionModel().getSelectedItem();
-           //     int predstID = predst.getID();
-                String nazev = event.getOldValue().toString();
-        
-        
-                //Testovaci zobrazeni indexu
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Index");
-                alert.setHeaderText("Predstavenie na ktore si klikol ma nazev: " + nazev );                
-                alert.showAndWait();
+   //     Predstavenie predst = eventsTable.getSelectionModel().getSelectedItem();
+   //     int predstID = predst.getID();
+        String nazev = event.getOldValue().toString();
+
+
+        //Testovaci zobrazeni indexu
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Index");
+        alert.setHeaderText("Predstavenie na ktore si klikol ma nazev: " + nazev );                
+        alert.showAndWait();
     }
  
     public void editTickets ( ActionEvent event ) throws IOException

@@ -115,7 +115,7 @@ public class SignupController implements Initializable {
             if ( invalidSignUp == false ) {
                 
                 //insertnem do db
-                PreparedStatement insertUser = conn.prepareStatement("INSERT INTO osoba (name,surname,username,password,email,rights) VALUES (?,?,?,?,?,0)");
+                PreparedStatement insertUser = conn.prepareStatement("INSERT INTO osoba (name,surname,username,password,email,rights,money) VALUES (?,?,?,?,?,0,0)");
                 insertUser.setString(1, nameSignUp.getText());
                 insertUser.setString(2, surnameSignUp.getText());
                 insertUser.setString(3, usernameSignUp.getText());
