@@ -167,12 +167,11 @@ public class LoggedWindowController implements Initializable {
         currentStage.show();
     }
     
-    public void eventDetails ( TableColumn.CellEditEvent event ) throws SQLException,IOException
+    public void eventDetails (TableColumn.CellEditEvent event ) throws SQLException,IOException
     {
    //     Predstavenie predst = eventsTable.getSelectionModel().getSelectedItem();
    //     int predstID = predst.getID();
         String nazev = event.getOldValue().toString();
-
         PreparedStatement getUser = conn.prepareStatement("SELECT udalost_id FROM udalost WHERE name LIKE ?");
         getUser.setString(1, nazev);
         ResultSet result = getUser.executeQuery();
