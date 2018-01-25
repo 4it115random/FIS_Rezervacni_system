@@ -16,11 +16,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import main.main;
 
@@ -34,6 +36,16 @@ public class EventDetailsController implements Initializable {
     private Connection conn;
     private main mn;
     private ObservableList<Predstavenie> data;
+    
+    @FXML
+    private Label nazevLbl;
+    @FXML
+    private Label adresaLbl;
+    @FXML
+    private Label terminLbl;
+    @FXML
+    private Label popisLbl;
+    
     /**
      * Initializes the controller class.
      */
@@ -41,11 +53,17 @@ public class EventDetailsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             this.conn = db.getConnection();
+            changeLabels();
         } catch (Exception ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     } 
+    
+    public void changeLabels() throws SQLException, IOException {
+        nazevLbl.setText("NEJLEPSI UDALOST!");
+    }
+    
     public void BuyTickets ( ActionEvent event ) throws SQLException, IOException {
                 Parent loggedRoot;
                 loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/BuyTickets.fxml"));

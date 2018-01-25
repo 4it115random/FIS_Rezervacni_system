@@ -91,7 +91,7 @@ public class LoggedWindowController implements Initializable {
         MenuItem mItem = (MenuItem) event.getSource();
         
         //vymazani global. prom.
-        GlobalLoggedUser.removeData();
+        GlobalLoggedUser.removeUserData();
         
         //zmena na okno pro prihlaseni
         Parent loggedRoot;
@@ -158,6 +158,8 @@ public class LoggedWindowController implements Initializable {
         
     public void showDetails (ActionEvent event ) throws IOException
     {   
+        //TADY MI PROSIM DO TOHO ULOZ ID TE UDALOSTI KTERA JE VYBRANA
+        GlobalLoggedUser.eventID = 0;
         
         //zmena na okno pro prihlaseni
         Parent loggedRoot;

@@ -15,11 +15,16 @@ public class GlobalLoggedUser {
     public static String userSurname = "";
     public static String userUsername = "";
     
+    public static int eventID = -1;
  
-    public static void removeData () {
+    public static void removeUserData() {
         GlobalLoggedUser.userID = -1;
         GlobalLoggedUser.userName = "";
         GlobalLoggedUser.userSurname = "";
         GlobalLoggedUser.userUsername = "";
+    }
+    
+    public static void removeEventData() {
+        GlobalLoggedUser.eventID = -1;
     }
 }
