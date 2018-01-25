@@ -6,11 +6,14 @@
 package GUI;
 
 import Database.db;
+import implementation.GlobalLoggedUser;
+import implementation.Listok;
 import implementation.Predstavenie;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -44,18 +47,18 @@ import main.main;
 public class EditTicketsController implements Initializable {
         private Connection conn;
         private main mn;
-        private ObservableList<Predstavenie> data;
+        private ObservableList<Listok> data;
     
     @FXML
-    private TableView<Predstavenie> eventsTable;
+    private TableView<Listok> eventsTable;
     @FXML
-    private TableColumn<Predstavenie, String> nameColumn;
+    private TableColumn<Listok, String> nameColumn;
     @FXML
-    private TableColumn<Predstavenie, Date> dateColumn;
+    private TableColumn<Listok, Date> dateColumn;
     @FXML
-    private TableColumn<Predstavenie, Integer> priceColumn;
+    private TableColumn<Listok, Integer> priceColumn;
     @FXML
-    private TableColumn<Predstavenie, String> noteColumn;
+    private TableColumn<Listok, String> noteColumn;
     @FXML
     private TextField nameTF;
     @FXML
@@ -90,38 +93,60 @@ public class EditTicketsController implements Initializable {
     public void loadEventsFromDatabase(  ) throws SQLException, Exception{
             this.conn = db.getConnection();
             data = FXCollections.observableArrayList();
-            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
+            
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM koupene_listky");
             while (rs.next()){
-                data.add(new Predstavenie(rs.getString(2),rs.getDate(3)));
+                PreparedStatement getNazev = conn.prepareStatement("SELECT name,datum FROM udalost WHERE udalost_id LIKE ?");
+                getNazev.setInt(1, rs.getInt("udalost_id"));
+                ResultSet result = getNazev.executeQuery();
+ 
+                while ( result.next() ) 
+                {
+                    data.add(new Listok(result.getString("name"),result.getDate("datum"),rs.getInt(4),rs.getString(5)));
+                    eventsTable.setItems(data);
+                }    
             }
-            
             //Nastavenie hodnot do mojej tabulky
-            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("nazev"));
             dateColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
+            priceColumn.setCellValueFactory(new PropertyValueFactory<>("cena"));
+            noteColumn.setCellValueFactory(new PropertyValueFactory<>("poznamka"));
+            noteColumn.setOnEditCommit(
+            (CellEditEvent<Listok, String> t) -> {
+                ((Listok) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())
+                        ).setNote(t.getNewValue());
+            }); 
             
-            eventsTable.setItems(null);
-            eventsTable.setItems(data);
+            
         }
     
         public void loadEventsFromDatabase( ActionEvent event  ) throws SQLException, Exception{
             this.conn = db.getConnection();
             data = FXCollections.observableArrayList();
-            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM koupene_listky");
             while (rs.next()){
-                data.add(new Predstavenie(rs.getString(2),rs.getDate(3)));
+                PreparedStatement getNazev = conn.prepareStatement("SELECT name,datum FROM udalost WHERE udalost_id LIKE ?");
+                getNazev.setInt(1, rs.getInt("udalost_id"));
+                ResultSet result = getNazev.executeQuery();
+ 
+                while ( result.next() ) 
+                {
+                    data.add(new Listok(result.getString("name"),result.getDate("datum"),rs.getInt(4),rs.getString(5)));
+                }    
+                
             }
-            
             //Nastavenie hodnot do mojej tabulky
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             dateColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
+            priceColumn.setCellValueFactory(new PropertyValueFactory<>("ticket_price"));
             noteColumn.setCellValueFactory(new PropertyValueFactory<>("note"));
-            noteColumn.setCellFactory(TextFieldTableCell.<Predstavenie>forTableColumn());
             noteColumn.setOnEditCommit(
-            (CellEditEvent<Predstavenie, String> t) -> {
-                ((Predstavenie) t.getTableView().getItems().get(
+            (CellEditEvent<Listok, String> t) -> {
+                ((Listok) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
-                        ).setName(t.getNewValue());
-        });
+                        ).setNote(t.getNewValue());
+            }); 
             
             eventsTable.setItems(null);
             eventsTable.setItems(data);
