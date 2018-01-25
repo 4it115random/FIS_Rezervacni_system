@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
@@ -12,10 +7,12 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="480.0" maxWidth="800.0" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.LoggedWindowController">
+<AnchorPane id="AnchorPane" maxHeight="480.0" maxWidth="800.0" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.LoggedWindowController">
    <children>
       <ImageView fitHeight="510.0" fitWidth="800.0" layoutY="-1.0" pickOnBounds="true">
          <image>
@@ -28,19 +25,21 @@
          </font>
       </Label>
       <Separator layoutX="121.0" orientation="VERTICAL" prefHeight="707.0" prefWidth="34.0" />
-      <MenuButton layoutX="14.0" layoutY="32.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="117.0" text="Menu">
+      <MenuButton fx:id="menuBar" layoutX="14.0" layoutY="32.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="117.0" text="Menu">
         <items>
-          <MenuItem mnemonicParsing="false" text="Správa lístků" />
+          <MenuItem mnemonicParsing="false" onAction="#editTickets" text="Správa lístků" />
+            <MenuItem mnemonicParsing="false" onAction="#eventAdd" text="Přidání představení" />
+            <MenuItem fx:id="menuItem3" mnemonicParsing="false" onAction="#eventRemove" text="Odebrání představení" />
           <MenuItem fx:id="logOutBtn" mnemonicParsing="false" onAction="#LogOut" text="Odhlášení" />
         </items>
          <font>
             <Font size="17.0" />
          </font>
       </MenuButton>
-      <TableView fx:id="eventsTable" layoutX="163.0" layoutY="77.0" prefHeight="319.0" prefWidth="463.0">
+      <TableView fx:id="eventsTable" editable="true" layoutX="163.0" layoutY="77.0" prefHeight="319.0" prefWidth="463.0">
         <columns>
-          <TableColumn fx:id="nazevColumn" prefWidth="220.0" text="Název" />
-          <TableColumn fx:id="timeColumn" prefWidth="242.0" text="Čas představení" />
+          <TableColumn fx:id="nazevColumn" onEditStart="#eventDetails" prefWidth="220.0" text="Název" />
+          <TableColumn fx:id="timeColumn" editable="false" prefWidth="242.0" text="Čas představení" />
         </columns>
       </TableView>
       <Button layoutX="646.0" layoutY="133.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="38.0" prefWidth="117.0" text="Podrobnosti" wrapText="true">

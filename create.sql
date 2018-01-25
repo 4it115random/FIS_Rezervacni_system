@@ -2,7 +2,8 @@
 CREATE TABLE benefit (
     benefit_id MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    description VARCHAR(500) NOT NULL
+    description VARCHAR(500) NOT NULL,
+    sleva	INTEGER NOT NULL
 );
 
 CREATE TABLE cenova_zona (
@@ -48,7 +49,8 @@ CREATE TABLE osoba (
     username   VARCHAR(30) NOT NULL,
     password   VARCHAR(255) NOT NULL,
     email      VARCHAR(255) NOT NULL,
-    rights     INTEGER NOT NULL
+    rights     INTEGER NOT NULL,
+    money      INTEGER
 );
 
 CREATE TABLE rezervace (
@@ -65,8 +67,7 @@ CREATE TABLE udalost (
     datum                  DATE NOT NULL,
     available_seats        INTEGER NOT NULL,
     ticket_price           INTEGER NOT NULL,
-    zarizeni_zarizeni_id   INTEGER,
-    restriction            INTEGER NOT NULL
+    zarizeni_id		   INTEGER NOT NULL
 );
 
 CREATE TABLE zarizeni (
