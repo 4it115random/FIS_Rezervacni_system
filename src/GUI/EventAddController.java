@@ -116,7 +116,6 @@ public class EventAddController implements Initializable {
         ObservableList<Integer> prices = FXCollections.observableArrayList();
         while (res.next()) {
             int pr = res.getInt("price");
-            System.out.println(pr);
             prices.add(pr);
         }
         price.setItems(null);
@@ -152,7 +151,6 @@ public class EventAddController implements Initializable {
         
         int cena = (int) price.getSelectionModel().getSelectedItem();
         
-        System.out.println(cena);
         int pocet = stringToInt(pocetTF.getText());
         String popis = popisTF.getText();
         int misto = 0;
@@ -177,7 +175,7 @@ public class EventAddController implements Initializable {
              misto<=0 ||
              cena<=0 ||
              pocetTF.getText().equals("") || pocet<=0 ||
-             popisTF.getText().equals("")) 
+             popisTF.getText().equals("") || terminTF.getValue() == null) 
         {            
             invalidData.setVisible(true);
         } else {
@@ -212,26 +210,61 @@ public class EventAddController implements Initializable {
                 switch (cena) {
                     case 199:
                         {
-                            PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
-                            insertMa.setInt(1, 3);
-                            insertMa.setInt(2, i+1);
-                            insertMa.executeUpdate();
+                            // vlozenie cenovej zony listku a jeho odvodenych zon do db
+                            
+                            PreparedStatement insertAdult = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertAdult.setInt(1, 3);
+                            insertAdult.setInt(2, i+1);
+                            insertAdult.executeUpdate();
+                            
+                            PreparedStatement insertStudent = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertStudent.setInt(1, 2);
+                            insertStudent.setInt(2, i+1);
+                            insertStudent.executeUpdate();
+                            
+                            PreparedStatement insertChild= conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertChild.setInt(1, 1);
+                            insertChild.setInt(2, i+1);
+                            insertChild.executeUpdate();
+                            
                             break;
                         }
                     case 599:
-                        {
-                            PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
-                            insertMa.setInt(1, 6);
-                            insertMa.setInt(2, i+1);
-                            insertMa.executeUpdate();
+                        {   
+                            PreparedStatement insertAdult = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertAdult.setInt(1, 6);
+                            insertAdult.setInt(2, i+1);
+                            insertAdult.executeUpdate();
+                            
+                            PreparedStatement insertStudent = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertStudent.setInt(1, 5);
+                            insertStudent.setInt(2, i+1);
+                            insertStudent.executeUpdate();
+                            
+                            PreparedStatement insertChild= conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertChild.setInt(1, 4);
+                            insertChild.setInt(2, i+1);
+                            insertChild.executeUpdate();
+                            
                             break; 
                         }
                     case 999:
                         {
-                            PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
-                            insertMa.setInt(1, 9);
-                            insertMa.setInt(2, i+1);
-                            insertMa.executeUpdate();
+                            PreparedStatement insertAdult = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertAdult.setInt(1, 9);
+                            insertAdult.setInt(2, i+1);
+                            insertAdult.executeUpdate();
+                            
+                            PreparedStatement insertStudent = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertStudent.setInt(1, 8);
+                            insertStudent.setInt(2, i+1);
+                            insertStudent.executeUpdate();
+                            
+                            PreparedStatement insertChild= conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertChild.setInt(1, 7);
+                            insertChild.setInt(2, i+1);
+                            insertChild.executeUpdate();
+                            
                             break;
                         }
                     default:
