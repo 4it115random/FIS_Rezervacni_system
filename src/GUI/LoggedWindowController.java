@@ -71,6 +71,9 @@ public class LoggedWindowController implements Initializable {
     private TableColumn<Predstavenie, String> nazevColumn;
     @FXML
     private TableColumn<Predstavenie, Date> timeColumn;
+    @FXML
+    private TableColumn<Predstavenie, Integer> seatsColumn;
+    
     
     /**
      * Initializes the controller class.
@@ -81,10 +84,26 @@ public class LoggedWindowController implements Initializable {
         try {
             this.conn = db.getConnection();
             loadEventsFromDatabase();
+            changeLabels();
         } catch (Exception ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
+    public void changeLabels() throws SQLException
+    {
+        PreparedStatement getRights = conn.prepareStatement("SELECT rights FROM osoba WHERE osoba_id LIKE ?");
+        getRights.setInt(1, GlobalLoggedUser.userID);
+        ResultSet result = getRights.executeQuery();
+        
+        while (result.next()){
+            if (result.getInt("rights") == 1)
+            {
+            menuItem2.setVisible(true);
+            menuItem3.setVisible(true);
+            }
+        }
+    }
+    
     
     public void LogOut (ActionEvent event ) throws IOException
     {       
@@ -124,12 +143,13 @@ public class LoggedWindowController implements Initializable {
         //Nastavenie hodnot do mojej tabulky
         nazevColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
-
+        
         eventsTable.setItems(null);
         eventsTable.setItems(data);
     }
 
     public void loadEventsFromDatabase( ActionEvent event  ) throws SQLException, Exception{
+        
         this.conn = db.getConnection();
         data = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
