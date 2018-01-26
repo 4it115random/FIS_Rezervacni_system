@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,31 +21,16 @@
             <Font name="Cambria" size="33.0" />
          </font>
       </Label>
-      <TableView fx:id="eventsTable" editable="true" layoutX="81.0" layoutY="77.0" prefHeight="230.0" prefWidth="465.0">
+      <TableView fx:id="eventsTable" editable="true" layoutX="81.0" layoutY="77.0" prefHeight="306.0" prefWidth="655.0">
         <columns>
-          <TableColumn fx:id="nazevColumn" prefWidth="220.0" text="Název" />
-          <TableColumn fx:id="timeColumn" editable="false" prefWidth="242.0" text="Čas představení" />
+          <TableColumn fx:id="nazevColumn" onEditStart="#eventRemove" prefWidth="344.0" text="Název" />
+          <TableColumn fx:id="timeColumn" editable="false" prefWidth="310.0" text="Čas představení" />
         </columns>
       </TableView>
-      <Button fx:id="delteBtn" layoutX="589.0" layoutY="154.0" mnemonicParsing="false" onAction="#eventRemove" prefHeight="38.0" prefWidth="117.0" text="Odstránit">
-         <font>
-            <Font size="17.0" />
-         </font></Button>
-      <TextField fx:id="nameTF" layoutX="573.0" layoutY="118.0" />
-      <Label layoutX="573.0" layoutY="77.0" prefHeight="31.0" prefWidth="117.0" text="Zadejte název:" textFill="WHITE">
-         <font>
-            <Font name="Cambria" size="17.0" />
-         </font>
-      </Label>
       <Button layoutX="2.0" layoutY="1.0" mnemonicParsing="false" onAction="#Return" prefHeight="35.0" prefWidth="109.0" text="Jít zpět">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Button fx:id="updateBtn" layoutX="589.0" layoutY="208.0" mnemonicParsing="false" onAction="#loadEventsFromDatabase" prefHeight="38.0" prefWidth="117.0" text="Aktualizovat">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Button>
       <Label fx:id="invalidName" layoutX="582.0" layoutY="266.0" prefHeight="31.0" prefWidth="173.0" text="Špatně zadaný název" textFill="RED" visible="false">
          <font>
             <Font name="Cambria" size="17.0" />

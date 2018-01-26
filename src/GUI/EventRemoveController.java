@@ -6,6 +6,7 @@
 package GUI;
 
 import Database.db;
+import implementation.GlobalLoggedUser;
 import implementation.Predstavenie;
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +32,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -53,10 +55,6 @@ public class EventRemoveController implements Initializable {
     private TableColumn<Predstavenie, String> nazevColumn;
     @FXML
     private TableColumn<Predstavenie, Date> timeColumn;
-    @FXML
-    private TextField nameTF;
-    @FXML
-    private Label invalidName;
     /**
      * Initializes the controller class.
      */
@@ -75,7 +73,7 @@ public class EventRemoveController implements Initializable {
             data = FXCollections.observableArrayList();
             ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
             while (rs.next()){
-                data.add(new Predstavenie(rs.getInt(1),rs.getString(2),rs.getDate(3)));
+                data.add(new Predstavenie(rs.getInt("udalost_id"),rs.getString(2),rs.getDate(3)));
             }
             
             //Nastavenie hodnot do mojej tabulky
@@ -87,12 +85,11 @@ public class EventRemoveController implements Initializable {
         }
     
         public void loadEventsFromDatabase( ActionEvent event  ) throws SQLException, Exception{
-            invalidName.setVisible(false);
             this.conn = db.getConnection();
             data = FXCollections.observableArrayList();
             ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
             while (rs.next()){
-                data.add(new Predstavenie(rs.getInt(1),rs.getString(2),rs.getDate(3)));
+                data.add(new Predstavenie(rs.getInt("udalost_id"),rs.getString(2),rs.getDate(3)));
             }
             
             //Nastavenie hodnot do mojej tabulky
@@ -103,61 +100,41 @@ public class EventRemoveController implements Initializable {
             eventsTable.setItems(data);
         }
       
-        public void eventRemove ( ActionEvent event ) throws SQLException 
-        {
-        boolean spatneUdaje = false;
-        invalidName.setVisible(false);
         
-        //Zkontrolujem, zda je vyplneny nazev
-        if ( nameTF.getText().equals("")) 
-        {            
-            invalidName.setVisible(true);
-        } else {
-            PreparedStatement getUdalost = conn.prepareStatement("SELECT name FROM udalost");
-            ResultSet result = getUdalost.executeQuery();
-            
-            //Zkontrolujem, zda v db je dane predstavenie
-            while ( result.next() ) {
-                if ( result.getString("name").equals(nameTF.getText()) ) {                    
-                    spatneUdaje = false;
-                    break;
-                }
-                else
-                {
-                    spatneUdaje = true;
-                    invalidName.setVisible(true);
-                }
-            }
-            
-            //Vse je v poradku a odebereme predstaveni z databaze
-            if ( spatneUdaje == false ) {
-                invalidName.setVisible(false);
-                //insertnem do db
-                PreparedStatement removeUser = conn.prepareStatement("DELETE FROM udalost WHERE name = ?");
-                removeUser.setString(1, nameTF.getText());
+        public void eventRemove ( CellEditEvent edittedCell ) throws SQLException,IOException 
+        {
+        Predstavenie eventSelected = (Predstavenie) eventsTable.getSelectionModel().getSelectedItem();          
+        //prikaz na zmazanie z DB
+        PreparedStatement removeEvent = conn.prepareStatement("DELETE FROM udalost WHERE udalost_id = ?");
+        removeEvent.setInt(1, eventSelected.getID());      
                 
-                //Zobrazeni alertu o potvrzeni zmazani                
-                ButtonType anoButt = new ButtonType("Smazat");
-                ButtonType nieButt = new ButtonType("Storno");
-                Alert alert = new Alert(AlertType.NONE, "Opravdu chcete představení zmazat?", anoButt, nieButt);
-                alert.setTitle("Zmazání představení");
-                alert.showAndWait().ifPresent(response -> {
-                    if (response == anoButt) {
-                        try {
-                            removeUser.executeUpdate();
-                            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-                            a.setTitle("Úspěch");
-                            a.setHeaderText("Zmazání proběhlo v pořádku");
-                            a.setContentText("Pro aktualizaci představení klikněte na Aktualizovat.");
-                            a.showAndWait();
-                        } catch (SQLException ex) {
-                            Logger.getLogger(EventRemoveController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+        //Zobrazeni alertu o potvrzeni zmazani                
+        ButtonType anoButt = new ButtonType("Smazat");
+        ButtonType nieButt = new ButtonType("Storno");
+        Alert alert = new Alert(AlertType.NONE, "Opravdu chcete představení zmazat?", anoButt, nieButt);
+        alert.setTitle("Zmazání představení");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == anoButt) {
+                try {
+                    removeEvent.executeUpdate();
+                    Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                    a.setTitle("Úspěch");
+                    a.setHeaderText("Zmazání proběhlo v pořádku");
+                    a.showAndWait();
+
+                    //Update
+                    try {
+                        this.conn = db.getConnection();
+                        loadEventsFromDatabase();
+                    } catch (Exception ex) {
+                        Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                });               
+                    
+                 } catch (SQLException ex) {
+                    Logger.getLogger(EventRemoveController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
             }
-            
-        }
+        });               
     }
         
     public void Return (ActionEvent event ) throws IOException
