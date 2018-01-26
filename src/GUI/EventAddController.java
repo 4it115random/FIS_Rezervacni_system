@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +31,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -49,11 +51,9 @@ import main.main;
 public class EventAddController implements Initializable {
     private Connection conn;
     private main mn;
-    
+
     @FXML
     private TextField nazevTF;
-    @FXML
-    private TextField adresaTF;
     @FXML
     private DatePicker terminTF;
     @FXML
@@ -64,6 +64,8 @@ public class EventAddController implements Initializable {
     private TextField pocetTF;
     @FXML
     private Label invalidData;
+    @FXML
+    private ComboBox zarizeni;
     /**
      * Initializes the controller class.
      */
@@ -71,10 +73,28 @@ public class EventAddController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             this.conn = db.getConnection();
+            initComboBox();
         } catch (Exception ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
+    
+    /**
+     * Priradenie názvov predstavení do ComboBoxu
+     * 
+     */
+    
+    public void initComboBox() throws SQLException, IOException {
+        PreparedStatement getID = conn.prepareStatement("SELECT name FROM zarizeni");
+        ResultSet res = getID.executeQuery();
+        ObservableList<String> names = FXCollections.observableArrayList();
+        while (res.next()) {
+            String name = res.getString("name");
+            names.add(name);
+        }
+        zarizeni.setItems(null);
+        zarizeni.setItems(names);
+    }
     
     public void eventAdd ( ActionEvent event ) throws SQLException, IOException {
         boolean spatneUdaje = true;
@@ -86,16 +106,16 @@ public class EventAddController implements Initializable {
         java.sql.Date sqlStartDate = new java.sql.Date(utilStartDate.getTime());    
         int cena = stringToInt(cenaTF.getText());
         int pocet = stringToInt(pocetTF.getText());
-        String mistoNazev = adresaTF.getText();
         String popis = popisTF.getText();
         int misto = 0;
         
         //Zkontrolujem, ci nazev daneho mista existuje
         PreparedStatement getID = conn.prepareStatement("SELECT * FROM zarizeni");
         ResultSet res = getID.executeQuery();
+        String selectedPlace = (String) zarizeni.getSelectionModel().getSelectedItem();
                        
             while ( res.next() ) {
-                if ( res.getString("name").equals(mistoNazev) ) {                    
+                if ( res.getString("name").equals(selectedPlace) ) {                    
                     misto = res.getInt("zarizeni_id");
                     spatneUdaje = false;
                     break;                    
@@ -105,7 +125,7 @@ public class EventAddController implements Initializable {
         
         //Zkontrolujem, zda jsou spravne vyplneny vsechny pole
         if ( nazevTF.getText().equals("") ||
-             adresaTF.getText().equals("") || misto<=0 ||
+             misto<=0 ||
              cenaTF.getText().equals("") || cena<=0 ||
              pocetTF.getText().equals("") || pocet<=0 ||
              popisTF.getText().equals("")) 
