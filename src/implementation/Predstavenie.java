@@ -20,6 +20,7 @@ public class Predstavenie {
     private Integer udalost_id;
     private StringProperty name;
     private Date datum;
+    private Integer available_seats;
     
     public Predstavenie(String name, Date datum, int available_seats)
     {

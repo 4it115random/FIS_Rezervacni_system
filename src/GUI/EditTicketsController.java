@@ -92,13 +92,14 @@ public class EditTicketsController implements Initializable {
     
     public void changeNoteCellEdit (CellEditEvent edittedCell) throws SQLException{
         
-        Listok listekSelected = (Listok) eventsTable.getSelectionModel().getSelectedItems();
-//        listekSelected.setNote( (String) edittedCell.getNewValue().toString());
-        System.out.println(edittedCell.getNewValue().toString());
-//        PreparedStatement updateUser = conn.prepareStatement("UPDATE koupene_listky SET poznamka = ? WHERE listek_id = ?");
-//        updateUser.setString(1, edittedCell.getNewValue().toString());
-//        updateUser.setInt(2, listekSelected.getID());
-//        updateUser.executeUpdate();
+        Listok listekSelected = (Listok) eventsTable.getSelectionModel().getSelectedItem();
+        
+        
+        listekSelected.setNote( (String) edittedCell.getNewValue().toString());
+        PreparedStatement updateUser = conn.prepareStatement("UPDATE koupene_listky SET poznamka = ? WHERE listek_id = ?");
+        updateUser.setString(1, edittedCell.getNewValue().toString());
+        updateUser.setInt(2, listekSelected.getID());
+        updateUser.executeUpdate();
     }
     
     public void loadEventsFromDatabase(  ) throws SQLException, Exception{
@@ -126,16 +127,9 @@ public class EditTicketsController implements Initializable {
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("cena"));
         noteColumn.setCellValueFactory(new PropertyValueFactory<>("poznamka"));
-//        noteColumn.setOnEditCommit(
-//        (CellEditEvent<Listok, String> t) -> {
-//            ((Listok) t.getTableView().getItems().get(
-//                    t.getTablePosition().getRow())
-//                    ).setNote(t.getNewValue());
-//        }); 
         
-
+        
         eventsTable.setItems(data);
-        
         eventsTable.setEditable(true);
         noteColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     }
@@ -178,12 +172,4 @@ public class EditTicketsController implements Initializable {
         noteColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     }
     
-    public void updateEdit(ActionEvent event)
-    {                
-            //Zobrazeni alertu s uspechem
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("pokus");
-            alert.setHeaderText("Po editovani sa ma nahrat hodnota do databaze.");
-            alert.showAndWait();
-    }
 }

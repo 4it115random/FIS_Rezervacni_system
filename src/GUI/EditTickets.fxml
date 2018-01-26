@@ -29,7 +29,7 @@
           <TableColumn fx:id="noteColumn" onEditCommit="#changeNoteCellEdit" prefWidth="173.0" text="Poznámka" />
         </columns>
       </TableView>
-      <Button layoutX="659.0" layoutY="137.0" mnemonicParsing="false" onAction="#loadEventsFromDatabase" prefHeight="38.0" prefWidth="117.0" text="Aktualizovat">
+      <Button layoutX="654.0" layoutY="77.0" mnemonicParsing="false" onAction="#loadEventsFromDatabase" prefHeight="38.0" prefWidth="117.0" text="Aktualizovat">
          <font>
             <Font size="17.0" />
          </font></Button>
@@ -37,10 +37,5 @@
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Button layoutX="659.0" layoutY="83.0" mnemonicParsing="false" onAction="#updateEdit" prefHeight="38.0" prefWidth="117.0" text="Potvrdiť">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Button>
    </children>
 </AnchorPane>
