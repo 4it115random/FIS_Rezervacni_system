@@ -40,6 +40,9 @@ import main.main;
 public class SignupController implements Initializable {
     private Connection conn;
     private main mn;
+    private static final int MAX_LENGTH = 12;
+    private static final int MIN_LENGTH = 3;
+    private static final int MIN_LENGTH_PASWD = 5;
     
     @FXML
     private Label loginLbl;
@@ -71,9 +74,19 @@ public class SignupController implements Initializable {
     private ImageView backgroundImg;
     @FXML
     private Label badFormEmail;
+    @FXML
+    private Label badFormUName;
+    @FXML
+    private Label badFormPaswd;
+    @FXML
+    private Label badFormName;
+    @FXML
+    private Label badFormSurname;
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -84,12 +97,24 @@ public class SignupController implements Initializable {
         }
     }    
     
+    /**
+     * 
+     * Metóda slúži pre prihlasovanie sa pomocou stlačenia tlačítka, kontrolujú sa v nej vstupy z okien
+     * @param event
+     * @throws SQLException
+     * @throws IOException
+     * @throws NoSuchAlgorithmException 
+     */
     public void SignUp ( ActionEvent event ) throws SQLException, IOException, NoSuchAlgorithmException {
         boolean invalidSignUp = false;
         invalidUsernameLbl.setVisible(false);
         invalidEmailLbl.setVisible(false);
         invalidFillingLbl.setVisible(false);
         badFormEmail.setVisible(false);
+        badFormUName.setVisible(false);
+        badFormPaswd.setVisible(false);
+        badFormName.setVisible(false);
+        badFormSurname.setVisible(false);
         
         //Zkontrolujem, zda jsou vyplneny vsechny pole
         if ( usernameSignUp.getText().equals("") || 
@@ -100,9 +125,17 @@ public class SignupController implements Initializable {
             
             invalidFillingLbl.setVisible(true);
         
-        // Pokrocilejsie kontroly pomocou regularnych vyrazov
+        // Pokrocilejsie kontroly pomocou regularnych vyrazov a kontroly dlzky
         } else if (! emailSignUp.getText().matches("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")) {
             badFormEmail.setVisible(true);
+        } else if (usernameSignUp.getText().length() > MAX_LENGTH || usernameSignUp.getText().length() < MIN_LENGTH || ! usernameSignUp.getText().matches("^[a-zA-Z0-9_]*$")) {
+            badFormUName.setVisible(true);
+        } else if (passwordSignUp.getText().length() < MIN_LENGTH_PASWD || ! passwordSignUp.getText().matches("^[a-zA-Z0-9_]*$")) {
+            badFormPaswd.setVisible(true);
+        } else if ( ! nameSignUp.getText().matches("^[a-zA-Z0-9_]*$")) {
+            badFormName.setVisible(true);
+        } else if ( ! surnameSignUp.getText().matches("^[a-zA-Z0-9_]*$")) {
+            badFormSurname.setVisible(true);
         } else {
             
             PreparedStatement getUsername = conn.prepareStatement("SELECT username,email FROM osoba");
@@ -130,7 +163,7 @@ public class SignupController implements Initializable {
                 insertUser.setString(1, nameSignUp.getText());
                 insertUser.setString(2, surnameSignUp.getText());
                 insertUser.setString(3, usernameSignUp.getText());
-                insertUser.setString(4, hashPasswd(passwordSignUp));    //!!ukladani hesla v Plaintextu je sice nejhorsi, ale hashovani dodelam pozdeji
+                insertUser.setString(4, hashPasswd(passwordSignUp));
                 insertUser.setString(5, emailSignUp.getText());
                 insertUser.executeUpdate();
                 
@@ -171,6 +204,7 @@ public class SignupController implements Initializable {
      * @param passwordSignUp
      * @return passHash
      * @throws java.security.NoSuchAlgorithmException
+     * @throws java.io.UnsupportedEncodingException
      */
     public String hashPasswd(TextField passwordSignUp) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         String passwd = passwordSignUp.getText();
@@ -185,6 +219,12 @@ public class SignupController implements Initializable {
         return hashString;
     }
 
+    /**
+     * Metóda return sa používa na zmenu scény na logovacie okno
+     * 
+     * @param event
+     * @throws IOException 
+     */
     public void Return (ActionEvent event ) throws IOException
     {
                 //zmena na okno pro prihlaseni

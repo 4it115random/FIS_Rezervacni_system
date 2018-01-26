@@ -6,8 +6,6 @@
 package GUI;
 
 import Database.db;
-import implementation.GlobalLoggedUser;
-import implementation.Predstavenie;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;

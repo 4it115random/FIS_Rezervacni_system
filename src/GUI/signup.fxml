@@ -35,5 +35,9 @@
       <Label fx:id="invalidEmailLbl" layoutX="280.0" layoutY="350.0" text="E-mail je již obsazen" textAlignment="CENTER" textFill="RED" visible="false" />
       <Label fx:id="invalidFillingLbl" layoutX="240.0" layoutY="350.0" text="Všechny pole musí být vyplněny" textAlignment="CENTER" textFill="RED" visible="false" />
       <Label fx:id="badFormEmail" layoutX="520.0" layoutY="361.0" text="Špatný tvar emailu" textFill="RED" visible="false" />
+      <Label fx:id="badFormUName" layoutX="493.0" layoutY="361.0" text="Nesprávné prihlašovací jméno" textFill="RED" visible="false" />
+      <Label fx:id="badFormPaswd" layoutX="507.0" layoutY="361.0" text="Nesprávné heslo" textFill="RED" visible="false" />
+      <Label fx:id="badFormName" layoutX="545.0" layoutY="361.0" text="Nesprávne jméno" textFill="RED" visible="false" />
+      <Label fx:id="badFormSurname" layoutX="517.0" layoutY="361.0" text="Nesprávne příjmení" textFill="RED" visible="false" />
    </children>
 </AnchorPane>
