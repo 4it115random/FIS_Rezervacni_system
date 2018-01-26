@@ -144,13 +144,24 @@ public class EventAddController implements Initializable {
         boolean spatneUdaje = true;
         invalidData.setVisible(false);
         int i = 0;
-        LocalDate localDate = terminTF.getValue();
-        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-        java.util.Date utilStartDate = Date.from(instant);
-        java.sql.Date sqlStartDate = new java.sql.Date(utilStartDate.getTime());
+        java.sql.Date sqlStartDate = null;
         
-        int cena = (int) price.getSelectionModel().getSelectedItem();
         
+
+
+        //kontrola vyplnenia casoveho udaju
+        if (terminTF.getValue() != null)  {
+            LocalDate localDate = terminTF.getValue();
+            Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+            java.util.Date utilStartDate = Date.from(instant);
+            sqlStartDate = new java.sql.Date(utilStartDate.getTime());
+        } else {
+            spatneUdaje = true;
+        }
+        
+        
+        
+        Integer cena = (Integer) price.getSelectionModel().getSelectedItem();
         int pocet = stringToInt(pocetTF.getText());
         String popis = popisTF.getText();
         int misto = 0;
@@ -169,11 +180,9 @@ public class EventAddController implements Initializable {
                 }
             }
         
-        
         //Zkontrolujem, zda jsou spravne vyplneny vsechny pole
         if ( nazevTF.getText().equals("") ||
-             misto<=0 ||
-             cena<=0 ||
+             misto<=0 || cena == null ||
              pocetTF.getText().equals("") || pocet<=0 ||
              popisTF.getText().equals("") || terminTF.getValue() == null) 
         {            
