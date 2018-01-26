@@ -64,8 +64,8 @@
             <Font size="22.0" />
          </font>
       </Label>
-      <TextField fx:id="cenaTF" layoutX="491.0" layoutY="102.0" />
       <TextField fx:id="pocetTF" layoutX="491.0" layoutY="145.0" />
       <DatePicker fx:id="terminTF" layoutX="152.0" layoutY="186.0" />
+      <ComboBox fx:id="price" layoutX="491.0" layoutY="102.0" prefWidth="187.0" />
    </children>
 </AnchorPane>

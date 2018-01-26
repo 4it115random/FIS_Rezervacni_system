@@ -59,13 +59,14 @@ public class EventAddController implements Initializable {
     @FXML
     private TextField popisTF;
     @FXML
-    private TextField cenaTF;
-    @FXML
     private TextField pocetTF;
     @FXML
     private Label invalidData;
     @FXML
     private ComboBox zarizeni;
+    @FXML
+    private ComboBox price;
+    
     /**
      * Initializes the controller class.
      * @param url
@@ -75,7 +76,8 @@ public class EventAddController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             this.conn = db.getConnection();
-            initComboBox();
+            initDevComboBox();
+            initPriceCombobox();
         } catch (Exception ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -88,7 +90,7 @@ public class EventAddController implements Initializable {
      * @throws java.io.IOException
      */
     
-    public void initComboBox() throws SQLException, IOException {
+    public void initDevComboBox() throws SQLException, IOException {
         PreparedStatement getID = conn.prepareStatement("SELECT name FROM zarizeni");
         ResultSet res = getID.executeQuery();
         ObservableList<String> names = FXCollections.observableArrayList();
@@ -98,6 +100,38 @@ public class EventAddController implements Initializable {
         }
         zarizeni.setItems(null);
         zarizeni.setItems(names);
+    }
+    
+    /**
+     * Priradenie cien predstavení do ComboBoxu
+     * 
+     * @throws java.sql.SQLException
+     * @throws java.io.IOException
+     */
+    
+    public void initPriceCombobox() throws SQLException, IOException {
+        PreparedStatement getID = conn.prepareStatement("SELECT price FROM cenova_zona WHERE name='dospely'");
+        ResultSet res = getID.executeQuery();
+        
+        ObservableList<Integer> prices = FXCollections.observableArrayList();
+        while (res.next()) {
+            int pr = res.getInt("price");
+            System.out.println(pr);
+            prices.add(pr);
+        }
+        price.setItems(null);
+        price.setItems(prices);
+        
+        /*ObservableList<String> prices = FXCollections.observableArrayList();
+        while (res.next()) {
+            String pr = Integer.toString(res.getInt("price"));
+            System.out.println(pr);
+            prices.add(pr);
+        }
+        price.setItems(null);
+        price.setItems(prices);*/
+        
+        //String pr = Integer.toString(res.getInt("price"));
     }
     
     /**
@@ -114,8 +148,11 @@ public class EventAddController implements Initializable {
         LocalDate localDate = terminTF.getValue();
         Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
         java.util.Date utilStartDate = Date.from(instant);
-        java.sql.Date sqlStartDate = new java.sql.Date(utilStartDate.getTime());    
-        int cena = stringToInt(cenaTF.getText());
+        java.sql.Date sqlStartDate = new java.sql.Date(utilStartDate.getTime());
+        
+        int cena = (int) price.getSelectionModel().getSelectedItem();
+        
+        System.out.println(cena);
         int pocet = stringToInt(pocetTF.getText());
         String popis = popisTF.getText();
         int misto = 0;
@@ -138,7 +175,7 @@ public class EventAddController implements Initializable {
         //Zkontrolujem, zda jsou spravne vyplneny vsechny pole
         if ( nazevTF.getText().equals("") ||
              misto<=0 ||
-             cenaTF.getText().equals("") || cena<=0 || cena > 999 ||
+             cena<=0 ||
              pocetTF.getText().equals("") || pocet<=0 ||
              popisTF.getText().equals("")) 
         {            
@@ -172,22 +209,34 @@ public class EventAddController implements Initializable {
                 insertUser.executeUpdate();
                 
                 //pridanie cenovej zony na zaklade ceny
-                if (cena <= 199) {
-                    PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
-                    insertMa.setInt(1, 3);
-                    insertMa.setInt(2, i+1);
-                    insertMa.executeUpdate();
-                } else if (cena <= 599) {
-                    PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
-                    insertMa.setInt(1, 6);
-                    insertMa.setInt(2, i+1);
-                    insertMa.executeUpdate();
-                } else if (cena <= 999) {
-                    PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
-                    insertMa.setInt(1, 9);
-                    insertMa.setInt(2, i+1);
-                    insertMa.executeUpdate();
-                } 
+                switch (cena) {
+                    case 199:
+                        {
+                            PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertMa.setInt(1, 3);
+                            insertMa.setInt(2, i+1);
+                            insertMa.executeUpdate();
+                            break;
+                        }
+                    case 599:
+                        {
+                            PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertMa.setInt(1, 6);
+                            insertMa.setInt(2, i+1);
+                            insertMa.executeUpdate();
+                            break; 
+                        }
+                    case 999:
+                        {
+                            PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                            insertMa.setInt(1, 9);
+                            insertMa.setInt(2, i+1);
+                            insertMa.executeUpdate();
+                            break;
+                        }
+                    default:
+                        break;
+                }
                 //Zobrazeni alertu s uspechem
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Úspešné přidání události");
