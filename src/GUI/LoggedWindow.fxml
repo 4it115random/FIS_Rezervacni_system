@@ -30,6 +30,7 @@
           <MenuItem mnemonicParsing="false" onAction="#editTickets" text="Správa lístků" />
             <MenuItem fx:id="menuItem2" mnemonicParsing="false" onAction="#eventAdd" text="Přidání představení" visible="false" />
             <MenuItem fx:id="menuItem3" mnemonicParsing="false" onAction="#eventRemove" text="Odebrání představení" visible="false" />
+            <MenuItem fx:id="addMoneyToUser" mnemonicParsing="false" onAction="#addMoneyToUser" text="Přidat peníze uživateli" visible="false" />
           <MenuItem fx:id="logOutBtn" mnemonicParsing="false" onAction="#LogOut" text="Odhlášení" />
         </items>
          <font>

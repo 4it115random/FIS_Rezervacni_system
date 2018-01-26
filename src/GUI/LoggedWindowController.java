@@ -66,6 +66,8 @@ public class LoggedWindowController implements Initializable {
     @FXML
     private MenuItem menuItem3;
     @FXML
+    private MenuItem addMoneyToUser;
+    @FXML
     private TableView<Predstavenie> eventsTable;
     @FXML
     private TableColumn<Predstavenie, String> nazevColumn;
@@ -100,6 +102,7 @@ public class LoggedWindowController implements Initializable {
             {
             menuItem2.setVisible(true);
             menuItem3.setVisible(true);
+            addMoneyToUser.setVisible(true);
             }
         }
     }
@@ -173,6 +176,17 @@ public class LoggedWindowController implements Initializable {
         loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/addMoney.fxml"));
         Scene loggedScene = new Scene(loggedRoot, 800, 480);       
         Stage currentStage = (Stage) ( (Node) event.getSource() ).getScene().getWindow();
+        currentStage.setScene(loggedScene);
+        currentStage.show();
+    }
+    
+    public void addMoneyToUser (ActionEvent event ) throws IOException
+    {   
+        //zmena na okno pro pridani penez uzivateli
+        Parent loggedRoot;
+        loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/addMoneyToUser.fxml"));
+        Scene loggedScene = new Scene(loggedRoot, 800, 480);  
+        Stage currentStage = (Stage) menuBar.getScene().getWindow();
         currentStage.setScene(loggedScene);
         currentStage.show();
     }

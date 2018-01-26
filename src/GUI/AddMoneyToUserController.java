@@ -6,6 +6,7 @@
 package GUI;
 
 import Database.db;
+import static GUI.AddMoneyController.isNumeric;
 import GUI.LoginController;
 import implementation.GlobalLoggedUser;
 import implementation.Predstavenie;
@@ -19,6 +20,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +28,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -36,42 +40,66 @@ import javafx.stage.Stage;
  *
  * @author Jan
  */
-public class AddMoneyController implements Initializable {
+public class AddMoneyToUserController implements Initializable {
 
+    /**
+     * Initializes the controller class.
+     */
+//    private ObservableList<String> options;
     private Connection conn;
     
     @FXML
     private Label errorLbl;
     @FXML
     private TextField moneyFld;
+    @FXML
+    private ComboBox userSelect;
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
             this.conn = db.getConnection();
+            addUsersToBox();
         } catch (Exception ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }
+
+    //Nacteni uzivatelu z data
+    public void addUsersToBox() throws SQLException {
+        PreparedStatement getUser = conn.prepareStatement("SELECT * FROM osoba");
+        ResultSet result = getUser.executeQuery();
+        while ( result.next() ) {
+            userSelect.getItems().add(result.getString("username"));
+        }
+    }
     
     public void addMoney( ActionEvent event  ) throws SQLException, Exception{
         String money = moneyFld.getText();
         if (isNumeric(money)) {
             
-            PreparedStatement getUser = conn.prepareStatement("SELECT osoba_id,money FROM osoba WHERE osoba_id LIKE ?");
-            getUser.setInt(1, GlobalLoggedUser.userID);
+            String choice = userSelect.getValue().toString();
+
+            PreparedStatement getUser = conn.prepareStatement("SELECT osoba_id,money FROM osoba WHERE username = ?");
+            getUser.setString(1,choice);
             ResultSet result = getUser.executeQuery();
-            result.next();
             
+            result.next();
+
             int newValue = result.getInt("money") + Integer.parseInt(money);
             PreparedStatement updateUser = conn.prepareStatement("UPDATE osoba SET money = ? WHERE osoba_id = ?");
             updateUser.setInt(1, newValue);
-            updateUser.setInt(2, GlobalLoggedUser.userID);
+            updateUser.setInt(2, result.getInt("osoba_id"));
             updateUser.executeUpdate();
-
+            
+            //Zobrazeni alertu s uspesnym zakoupenim listku
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Úspěšné přidání peněz");
+            alert.setHeaderText("Úspěšně jsi přidal " + Integer.parseInt(money) + " peněz uživateli " + choice);
+            alert.setContentText("Uživatel má nyní: " + newValue + "Kč.");
+            
+            alert.showAndWait();
+            
             Parent loggedRoot;
             loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/LoggedWindow.fxml"));
             Scene loggedScene = new Scene(loggedRoot, 800, 480);
@@ -85,7 +113,6 @@ public class AddMoneyController implements Initializable {
             moneyFld.setText("");
         }
     }
-    
     
     public static boolean isNumeric(String str)  
     {  
@@ -110,4 +137,5 @@ public class AddMoneyController implements Initializable {
         currentStage.setScene(loggedScene);
         currentStage.show();
     }
+    
 }
