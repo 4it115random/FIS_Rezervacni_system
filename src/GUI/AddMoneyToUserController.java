@@ -51,6 +51,8 @@ public class AddMoneyToUserController implements Initializable {
     @FXML
     private Label errorLbl;
     @FXML
+    private Label errorLbl2;
+    @FXML
     private TextField moneyFld;
     @FXML
     private ComboBox userSelect;
@@ -76,10 +78,18 @@ public class AddMoneyToUserController implements Initializable {
     
     public void addMoney( ActionEvent event  ) throws SQLException, Exception{
         String money = moneyFld.getText();
-        if (isNumeric(money)) {
+        boolean isMyComboBoxEmpty = userSelect.getSelectionModel().isEmpty();
+        if (isNumeric(money) && ! isMyComboBoxEmpty) {
             
             String choice = userSelect.getValue().toString();
-
+            if ( choice == null )
+            {
+                errorLbl.setText("Musíte vybrat uživatele");
+                errorLbl2.setVisible(true);
+            }
+            else
+            {
+                errorLbl.setVisible(false);
             PreparedStatement getUser = conn.prepareStatement("SELECT osoba_id,money FROM osoba WHERE username = ?");
             getUser.setString(1,choice);
             ResultSet result = getUser.executeQuery();
@@ -108,10 +118,20 @@ public class AddMoneyToUserController implements Initializable {
             currentStage.show();
             
             
-        } else {
-            errorLbl.setVisible(true);
-            moneyFld.setText("");
         }
+        }
+        else {
+            if ( isMyComboBoxEmpty )
+            {
+                errorLbl2.setVisible(true);
+                moneyFld.setText("");
+            }
+            else {
+                errorLbl.setVisible(true);
+                moneyFld.setText("");
+            }
+        }
+            
     }
     
     public static boolean isNumeric(String str)  

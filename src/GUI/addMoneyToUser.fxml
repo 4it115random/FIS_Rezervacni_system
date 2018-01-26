@@ -29,5 +29,6 @@
       <Button layoutX="358.0" layoutY="196.0" mnemonicParsing="false" onAction="#addMoney" text="Přidat částku" />
       <TextField fx:id="moneyFld" layoutX="326.0" layoutY="135.0" />
       <ComboBox fx:id="userSelect" layoutX="325.0" layoutY="77.0" prefWidth="150.0" promptText="Vyberte uzivatele" />
+      <Label fx:id="errorLbl2" layoutX="342.0" layoutY="171.0" text="Musíte zadat uživatele" textAlignment="CENTER" textFill="RED" visible="false" />
    </children>
 </AnchorPane>
