@@ -22,6 +22,13 @@ public class Predstavenie {
     private Date datum;
     private Integer available_seats;
     
+    public Predstavenie(int id,String name, Date datum)
+    {
+        this.udalost_id = id;
+        this.name = new SimpleStringProperty(name);
+        this.datum = datum;
+    }
+    
     public Predstavenie(String name, Date datum, int available_seats)
     {
     //    this.udalost_id = udalost_id;
@@ -29,12 +36,12 @@ public class Predstavenie {
         this.datum = datum;
         this.available_seats = available_seats;
     }
-     public Predstavenie(String name, Date datum)
-    {
-    //    this.udalost_id = udalost_id;
-        this.name = new SimpleStringProperty(name);
-        this.datum = datum;
-    }   
+//     public Predstavenie(String name, Date datum)
+//    {
+//    //    this.udalost_id = udalost_id;
+//        this.name = new SimpleStringProperty(name);
+//        this.datum = datum;
+//    }   
     public String getName(){
         return name.get();
     }

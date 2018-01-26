@@ -138,7 +138,7 @@ public class LoggedWindowController implements Initializable {
         
         ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
         while (rs.next()){
-            data.add(new Predstavenie(rs.getString(2),rs.getDate(3)));
+            data.add(new Predstavenie(rs.getInt(1),rs.getString(2),rs.getDate(3)));
         }
 
         //Nastavenie hodnot do mojej tabulky
@@ -155,7 +155,7 @@ public class LoggedWindowController implements Initializable {
         data = FXCollections.observableArrayList();
         ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
         while (rs.next()){
-            data.add(new Predstavenie(rs.getString(2),rs.getDate(3)));
+            data.add(new Predstavenie(rs.getInt(1),rs.getString(2),rs.getDate(3)));
         }
 
         //Nastavenie hodnot do mojej tabulky
@@ -190,15 +190,16 @@ public class LoggedWindowController implements Initializable {
     
     public void eventDetails (TableColumn.CellEditEvent event ) throws SQLException,IOException
     {
-   //     Predstavenie predst = eventsTable.getSelectionModel().getSelectedItem();
-   //     int predstID = predst.getID();
-        String nazev = event.getOldValue().toString();
-        PreparedStatement getUser = conn.prepareStatement("SELECT udalost_id FROM udalost WHERE name LIKE ?");
-        getUser.setString(1, nazev);
-        ResultSet result = getUser.executeQuery();
-        while ( result.next() ) {
-        GlobalLoggedUser.eventID = result.getInt("udalost_id");
-        }
+        Predstavenie predst = (Predstavenie) eventsTable.getSelectionModel().getSelectedItem();
+        GlobalLoggedUser.eventID = predst.getID();
+        
+//        String nazev = event.getOldValue().toString();
+//        PreparedStatement getUser = conn.prepareStatement("SELECT udalost_id FROM udalost WHERE name LIKE ?");
+//        getUser.setString(1, nazev);
+//        ResultSet result = getUser.executeQuery();
+//        while ( result.next() ) {
+//        GlobalLoggedUser.eventID = result.getInt("udalost_id");
+//        }
         
         Parent loggedRoot;
         loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/EventDetails.fxml"));

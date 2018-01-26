@@ -75,7 +75,7 @@ public class EventRemoveController implements Initializable {
             data = FXCollections.observableArrayList();
             ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
             while (rs.next()){
-                data.add(new Predstavenie(rs.getString(2),rs.getDate(3)));
+                data.add(new Predstavenie(rs.getInt(1),rs.getString(2),rs.getDate(3)));
             }
             
             //Nastavenie hodnot do mojej tabulky
@@ -92,7 +92,7 @@ public class EventRemoveController implements Initializable {
             data = FXCollections.observableArrayList();
             ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
             while (rs.next()){
-                data.add(new Predstavenie(rs.getString(2),rs.getDate(3)));
+                data.add(new Predstavenie(rs.getInt(1),rs.getString(2),rs.getDate(3)));
             }
             
             //Nastavenie hodnot do mojej tabulky
