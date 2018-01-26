@@ -82,6 +82,8 @@ public class EventAddController implements Initializable {
     /**
      * Priradenie názvov predstavení do ComboBoxu
      * 
+     * @throws java.sql.SQLException
+     * @throws java.io.IOException
      */
     
     public void initComboBox() throws SQLException, IOException {
@@ -112,6 +114,7 @@ public class EventAddController implements Initializable {
         //Zkontrolujem, ci nazev daneho mista existuje
         PreparedStatement getID = conn.prepareStatement("SELECT * FROM zarizeni");
         ResultSet res = getID.executeQuery();
+        //Vybratie aktualne zvoleneho miesta z ComboBoxu
         String selectedPlace = (String) zarizeni.getSelectionModel().getSelectedItem();
                        
             while ( res.next() ) {
