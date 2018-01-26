@@ -26,7 +26,7 @@
           <TableColumn fx:id="nameColumn" prefWidth="131.0" text="Název představení" />
             <TableColumn fx:id="dateColumn" editable="false" prefWidth="136.0" text="Dátum představení" />
             <TableColumn fx:id="priceColumn" editable="false" prefWidth="75.0" text="Cena lístku" />
-          <TableColumn fx:id="noteColumn" prefWidth="173.0" text="Poznámka" />
+          <TableColumn fx:id="noteColumn" onEditCommit="#changeNoteCellEdit" prefWidth="173.0" text="Poznámka" />
         </columns>
       </TableView>
       <Button layoutX="659.0" layoutY="137.0" mnemonicParsing="false" onAction="#loadEventsFromDatabase" prefHeight="38.0" prefWidth="117.0" text="Aktualizovat">

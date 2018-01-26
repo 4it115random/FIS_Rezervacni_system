@@ -90,74 +90,100 @@ public class EditTicketsController implements Initializable {
                 currentStage.show();
     }
     
+    public void changeNoteCellEdit (CellEditEvent edittedCell) throws SQLException{
+        
+        Listok listekSelected = (Listok) eventsTable.getSelectionModel().getSelectedItems();
+//        listekSelected.setNote( (String) edittedCell.getNewValue().toString());
+        System.out.println(edittedCell.getNewValue().toString());
+//        PreparedStatement updateUser = conn.prepareStatement("UPDATE koupene_listky SET poznamka = ? WHERE listek_id = ?");
+//        updateUser.setString(1, edittedCell.getNewValue().toString());
+//        updateUser.setInt(2, listekSelected.getID());
+//        updateUser.executeUpdate();
+    }
+    
     public void loadEventsFromDatabase(  ) throws SQLException, Exception{
-            this.conn = db.getConnection();
-            data = FXCollections.observableArrayList();
-            
-            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM koupene_listky");
-            while (rs.next()){
-                PreparedStatement getNazev = conn.prepareStatement("SELECT name,datum FROM udalost WHERE udalost_id LIKE ?");
-                getNazev.setInt(1, rs.getInt("udalost_id"));
-                ResultSet result = getNazev.executeQuery();
- 
-                while ( result.next() ) 
-                {
-                    data.add(new Listok(result.getString("name"),result.getDate("datum"),rs.getInt(4),rs.getString(5)));
-                    eventsTable.setItems(data);
-                }    
-            }
-            //Nastavenie hodnot do mojej tabulky
-            nameColumn.setCellValueFactory(new PropertyValueFactory<>("nazev"));
-            dateColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
-            priceColumn.setCellValueFactory(new PropertyValueFactory<>("cena"));
-            noteColumn.setCellValueFactory(new PropertyValueFactory<>("poznamka"));
-            noteColumn.setOnEditCommit(
-            (CellEditEvent<Listok, String> t) -> {
-                ((Listok) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setNote(t.getNewValue());
-            }); 
-            
-            
-        }
-    
-        public void loadEventsFromDatabase( ActionEvent event  ) throws SQLException, Exception{
-            this.conn = db.getConnection();
-            data = FXCollections.observableArrayList();
-            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM koupene_listky");
-            while (rs.next()){
-                PreparedStatement getNazev = conn.prepareStatement("SELECT name,datum FROM udalost WHERE udalost_id LIKE ?");
-                getNazev.setInt(1, rs.getInt("udalost_id"));
-                ResultSet result = getNazev.executeQuery();
- 
-                while ( result.next() ) 
-                {
-                    data.add(new Listok(result.getString("name"),result.getDate("datum"),rs.getInt(4),rs.getString(5)));
-                }    
+        this.conn = db.getConnection();
+        data = FXCollections.observableArrayList();
+        
+        PreparedStatement getEvent1 = conn.prepareStatement("SELECT listek_id,udalost_id,price,poznamka FROM koupene_listky WHERE osoba_id = ?");
+        getEvent1.setInt(1, GlobalLoggedUser.userID);
+        ResultSet rs = getEvent1.executeQuery();
+        
+        
+        while (rs.next()){
+            PreparedStatement getNazev = conn.prepareStatement("SELECT name,datum FROM udalost WHERE udalost_id LIKE ?");
+            getNazev.setInt(1, rs.getInt("udalost_id"));
+            ResultSet result = getNazev.executeQuery();
+
+            while ( result.next() ) 
+            {
+                data.add(new Listok(rs.getInt("listek_id"),result.getString("name"),result.getDate("datum"),rs.getInt("price"),rs.getString("poznamka")));
                 
-            }
-            //Nastavenie hodnot do mojej tabulky
-            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-            dateColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
-            priceColumn.setCellValueFactory(new PropertyValueFactory<>("ticket_price"));
-            noteColumn.setCellValueFactory(new PropertyValueFactory<>("note"));
-            noteColumn.setOnEditCommit(
-            (CellEditEvent<Listok, String> t) -> {
-                ((Listok) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setNote(t.getNewValue());
-            }); 
-            
-            eventsTable.setItems(null);
-            eventsTable.setItems(data);
+            }    
         }
+        //Nastavenie hodnot do mojej tabulky
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("nazev"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("cena"));
+        noteColumn.setCellValueFactory(new PropertyValueFactory<>("poznamka"));
+//        noteColumn.setOnEditCommit(
+//        (CellEditEvent<Listok, String> t) -> {
+//            ((Listok) t.getTableView().getItems().get(
+//                    t.getTablePosition().getRow())
+//                    ).setNote(t.getNewValue());
+//        }); 
+        
+
+        eventsTable.setItems(data);
+        
+        eventsTable.setEditable(true);
+        noteColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+    }
     
-        public void updateEdit(ActionEvent event)
-        {                
-                //Zobrazeni alertu s uspechem
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("pokus");
-                alert.setHeaderText("Po editovani sa ma nahrat hodnota do databaze.");
-                alert.showAndWait();
+    public void loadEventsFromDatabase( ActionEvent event  ) throws SQLException, Exception{
+        this.conn = db.getConnection();
+        data = FXCollections.observableArrayList();
+
+        PreparedStatement getEvent = conn.prepareStatement("SELECT listek_id,udalost_id,price,poznamka FROM koupene_listky WHERE osoba_id = ?");
+        getEvent.setInt(1, GlobalLoggedUser.userID);
+        ResultSet rs = getEvent.executeQuery();
+        
+        
+        while (rs.next()){
+            PreparedStatement getNazev = conn.prepareStatement("SELECT name,datum FROM udalost WHERE udalost_id LIKE ?");
+            getNazev.setInt(1, rs.getInt("udalost_id"));
+            ResultSet result = getNazev.executeQuery();
+
+            while ( result.next() ) 
+            {
+                data.add(new Listok(rs.getInt("listek_id"),result.getString("name"),result.getDate("datum"),rs.getInt("price"),rs.getString("poznamka")));
+            }    
         }
+        //Nastavenie hodnot do mojej tabulky
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("nazev"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("cena"));
+        noteColumn.setCellValueFactory(new PropertyValueFactory<>("poznamka"));
+//        noteColumn.setOnEditCommit(
+//        (CellEditEvent<Listok, String> t) -> {
+//            ((Listok) t.getTableView().getItems().get(
+//                    t.getTablePosition().getRow())
+//                    ).setNote(t.getNewValue());
+//        }); 
+
+        eventsTable.setItems(null);
+        eventsTable.setItems(data);
+        
+        eventsTable.setEditable(true);
+        noteColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+    }
+    
+    public void updateEdit(ActionEvent event)
+    {                
+            //Zobrazeni alertu s uspechem
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("pokus");
+            alert.setHeaderText("Po editovani sa ma nahrat hodnota do databaze.");
+            alert.showAndWait();
+    }
 }

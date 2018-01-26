@@ -20,10 +20,6 @@ public class Predstavenie {
     private Integer udalost_id;
     private StringProperty name;
     private Date datum;
-    private Integer available_seats;
-    private Integer ticket_price;
-    private Integer zarizeni_zarizeni_id;
-    private Integer restriction_id;
     
     public Predstavenie(String name, Date datum)
     {

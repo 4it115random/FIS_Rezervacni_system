@@ -14,12 +14,14 @@ import javafx.beans.property.StringProperty;
  * @author Marcel
  */
 public class Listok {
-    private final StringProperty nazev;
-    private final Date datum;
-    private final Integer cena;
-    private final StringProperty poznamka;
+    private Integer listek_id;
+    private StringProperty nazev;
+    private Date datum;
+    private Integer cena;
+    private StringProperty poznamka;
     
-    public Listok(String nazev, Date datum, int cena, String poznamka){
+    public Listok(Integer id,String nazev, Date datum, int cena, String poznamka){
+        this.listek_id = id;
         this.nazev = new SimpleStringProperty(nazev);
         this.datum = datum;
         this.cena = cena;
@@ -27,7 +29,26 @@ public class Listok {
     }
     
     public void setNote(String nName){
-        poznamka.set(nName);
+        this.poznamka = new SimpleStringProperty(nName);
     }
     
+    public Integer getID () {
+        return listek_id;
+    }
+    
+    public String getNazev () {
+        return nazev.get();
+    }
+    
+    public Date getDatum() {
+        return datum;
+    }
+    
+    public Integer getCena() {
+        return cena;
+    }
+    
+    public String getPoznamka() {
+        return poznamka.get();
+    }
 }

@@ -94,6 +94,7 @@ public class EventDetailsController implements Initializable {
     
     public void Return (ActionEvent event ) throws IOException
     {
+                GlobalLoggedUser.removeEventData();
                 Parent loggedRoot;
                 loggedRoot = FXMLLoader.load(getClass().getResource("/GUI/LoggedWindow.fxml"));
                 Scene loggedScene = new Scene(loggedRoot, 800, 480);

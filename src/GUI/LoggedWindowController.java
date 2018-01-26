@@ -116,6 +116,7 @@ public class LoggedWindowController implements Initializable {
         ZsLbl.setText(Integer.toString(result.getInt("money")) + " Kč,-");
         
         data = FXCollections.observableArrayList();
+        
         ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM udalost");
         while (rs.next()){
             data.add(new Predstavenie(rs.getString(2),rs.getDate(3)));
