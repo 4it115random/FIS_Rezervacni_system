@@ -68,6 +68,8 @@ public class EventAddController implements Initializable {
     private ComboBox zarizeni;
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -98,6 +100,13 @@ public class EventAddController implements Initializable {
         zarizeni.setItems(names);
     }
     
+    /**
+     * 
+     * Metoda eventAdd pridáva do databáze údaje z políčok a robí kontroly políčok
+     * @param event
+     * @throws SQLException
+     * @throws IOException 
+     */
     public void eventAdd ( ActionEvent event ) throws SQLException, IOException {
         boolean spatneUdaje = true;
         invalidData.setVisible(false);
@@ -129,7 +138,7 @@ public class EventAddController implements Initializable {
         //Zkontrolujem, zda jsou spravne vyplneny vsechny pole
         if ( nazevTF.getText().equals("") ||
              misto<=0 ||
-             cenaTF.getText().equals("") || cena<=0 ||
+             cenaTF.getText().equals("") || cena<=0 || cena > 999 ||
              pocetTF.getText().equals("") || pocet<=0 ||
              popisTF.getText().equals("")) 
         {            
@@ -161,7 +170,24 @@ public class EventAddController implements Initializable {
                 insertUser.setInt(5, misto); 
                 insertUser.setString(6, popis);
                 insertUser.executeUpdate();
-         
+                
+                //pridanie cenovej zony na zaklade ceny
+                if (cena <= 199) {
+                    PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                    insertMa.setInt(1, 3);
+                    insertMa.setInt(2, i+1);
+                    insertMa.executeUpdate();
+                } else if (cena <= 599) {
+                    PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                    insertMa.setInt(1, 6);
+                    insertMa.setInt(2, i+1);
+                    insertMa.executeUpdate();
+                } else if (cena <= 999) {
+                    PreparedStatement insertMa = conn.prepareStatement("INSERT INTO ma (cenova_zona_id,udalost_id) VALUES (?,?)");
+                    insertMa.setInt(1, 9);
+                    insertMa.setInt(2, i+1);
+                    insertMa.executeUpdate();
+                } 
                 //Zobrazeni alertu s uspechem
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Úspešné přidání události");
@@ -182,6 +208,13 @@ public class EventAddController implements Initializable {
         }
     }
     
+    /**
+     * 
+     * Metoda Return nastavuje novú scénu do Stage
+     * @param event
+     * @throws IOException 
+     */
+    
     public void Return (ActionEvent event ) throws IOException
     {
                 //zmena na okno pro prihlaseni
@@ -192,7 +225,12 @@ public class EventAddController implements Initializable {
                 currentStage.setScene(loggedScene);
                 currentStage.show();
     }
-    
+    /**
+     * Metóda stringToInt konvertuje String na Integer
+     * 
+     * @param s
+     * @return hodnota Integeru
+     */
     private static int stringToInt(String s) {
     try {
         return Integer.valueOf(s);
