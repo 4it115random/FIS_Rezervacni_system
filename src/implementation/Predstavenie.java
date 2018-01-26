@@ -21,20 +21,28 @@ public class Predstavenie {
     private StringProperty name;
     private Date datum;
     
-    public Predstavenie(String name, Date datum)
+    public Predstavenie(String name, Date datum, int available_seats)
     {
     //    this.udalost_id = udalost_id;
         this.name = new SimpleStringProperty(name);
         this.datum = datum;
+        this.available_seats = available_seats;
     }
-    
+     public Predstavenie(String name, Date datum)
+    {
+    //    this.udalost_id = udalost_id;
+        this.name = new SimpleStringProperty(name);
+        this.datum = datum;
+    }   
     public String getName(){
         return name.get();
     }
     public Integer getID(){
         return udalost_id;
     }
-    
+    public Integer getSeats(){
+        return available_seats;
+    }    
     public void setName(String nName){
         name.set(nName);
     }

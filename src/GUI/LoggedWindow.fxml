@@ -28,8 +28,8 @@
       <MenuButton fx:id="menuBar" layoutX="11.0" layoutY="158.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="117.0" text="Menu">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#editTickets" text="Správa lístků" />
-            <MenuItem mnemonicParsing="false" onAction="#eventAdd" text="Přidání představení" />
-            <MenuItem fx:id="menuItem3" mnemonicParsing="false" onAction="#eventRemove" text="Odebrání představení" />
+            <MenuItem fx:id="menuItem2" mnemonicParsing="false" onAction="#eventAdd" text="Přidání představení" visible="false" />
+            <MenuItem fx:id="menuItem3" mnemonicParsing="false" onAction="#eventRemove" text="Odebrání představení" visible="false" />
           <MenuItem fx:id="logOutBtn" mnemonicParsing="false" onAction="#LogOut" text="Odhlášení" />
         </items>
          <font>
@@ -38,8 +38,8 @@
       </MenuButton>
       <TableView fx:id="eventsTable" editable="true" layoutX="163.0" layoutY="77.0" prefHeight="319.0" prefWidth="463.0">
         <columns>
-          <TableColumn fx:id="nazevColumn" onEditStart="#eventDetails" prefWidth="220.0" text="Název" />
-          <TableColumn fx:id="timeColumn" editable="false" prefWidth="242.0" text="Čas představení" />
+          <TableColumn fx:id="nazevColumn" onEditStart="#eventDetails" prefWidth="231.0" text="Název" />
+          <TableColumn fx:id="timeColumn" editable="false" prefWidth="231.0" text="Čas představení" />
         </columns>
       </TableView>
       <Button layoutX="646.0" layoutY="89.0" mnemonicParsing="false" onAction="#loadEventsFromDatabase" prefHeight="38.0" prefWidth="117.0" text="Aktualizovat">

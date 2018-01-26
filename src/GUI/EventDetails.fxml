@@ -63,5 +63,15 @@
             <Font size="22.0" />
          </font>
       </Label>
+      <Label fx:id="seatsLbl1" layoutX="41.0" layoutY="267.0" text="Volných míst" textFill="WHITE">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Label fx:id="seatsLbl2" layoutX="202.0" layoutY="267.0" text="ass" textFill="WHITE">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
