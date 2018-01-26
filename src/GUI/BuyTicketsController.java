@@ -187,8 +187,7 @@ public class BuyTicketsController implements Initializable {
                         }
                         
         // Priradime osobu k predstaveniu podla poctu nakupenych listkov        
-        PreparedStatement listekID = conn.prepareStatement("SELECT * FROM koupene_listky WHERE osoba_id LIKE ?");
-        listekID.setInt(1, GlobalLoggedUser.userID);
+        PreparedStatement listekID = conn.prepareStatement("SELECT * FROM koupene_listky");
         ResultSet r1 = listekID.executeQuery();
         // nastavime listek_id na spravnu hodnotu
         while (r1.next()) { i++; }

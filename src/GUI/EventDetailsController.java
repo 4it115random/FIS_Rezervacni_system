@@ -48,6 +48,8 @@ public class EventDetailsController implements Initializable {
     private Label terminLbl2;
     @FXML
     private Label popisLbl2;
+    @FXML
+    private Label seatsLbl2;
     
     /**
      * Initializes the controller class.
@@ -64,7 +66,7 @@ public class EventDetailsController implements Initializable {
     } 
     
     public void changeLabels() throws SQLException, IOException {
-        PreparedStatement r = conn.prepareStatement("SELECT name,datum,popis,zarizeni_id FROM udalost WHERE udalost_id LIKE ?");
+        PreparedStatement r = conn.prepareStatement("SELECT name,datum,popis,zarizeni_id,available_seats FROM udalost WHERE udalost_id LIKE ?");
         r.setInt(1, GlobalLoggedUser.eventID);
         ResultSet result1 = r.executeQuery();       
 
@@ -72,6 +74,7 @@ public class EventDetailsController implements Initializable {
         nazevLbl2.setText(result1.getString("name"));
         terminLbl2.setText(result1.getDate("datum").toString());
         popisLbl2.setText(result1.getString("popis"));
+        seatsLbl2.setText(result1.getString("available_seats"));        
         
         PreparedStatement r2 = conn.prepareStatement("SELECT name FROM zarizeni WHERE zarizeni_id LIKE ?");
         r2.setInt(1, result1.getInt("zarizeni_id"));
