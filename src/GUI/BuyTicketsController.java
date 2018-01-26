@@ -83,6 +83,30 @@ public class BuyTicketsController implements Initializable {
       
         public void changeLabels() throws SQLException, IOException {
             
+        //Zobrazeni upozorneni o restriction
+        String sql = "SELECT * FROM omezeni JOIN obsahuje ON omezeni.omezeni_id = obsahuje.omezeni_id WHERE obsahuje.udalost_id LIKE ?";
+        String AlertText = "";
+//        PreparedStatement res = conn.prepareStatement("SELECT * FROM obsahuje WHERE udalost_id LIKE ?");
+        PreparedStatement res = conn.prepareStatement(sql);
+        res.setInt(1, GlobalLoggedUser.eventID);        
+        ResultSet restriction = res.executeQuery();
+        
+        
+        if ( restriction.isBeforeFirst() ) {
+            System.out.println("PP");
+            while(restriction.next()) {
+                System.out.println(restriction.getString("description"));
+                AlertText += restriction.getString("description") + " ";
+            }
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Pozor, událost má omezení!");
+            alert.setHeaderText("Věnujte, prosím, pozornost těmto omezením:");
+            alert.setContentText(AlertText);
+            
+            alert.showAndWait();
+        }   
+            
+            
         PreparedStatement r = conn.prepareStatement("SELECT cenova_zona_id FROM ma WHERE udalost_id LIKE ?");
         r.setInt(1, GlobalLoggedUser.eventID);        
         ResultSet result1 = r.executeQuery();  
@@ -96,6 +120,10 @@ public class BuyTicketsController implements Initializable {
         dospeliPoc.setVisible(false);
         detiPoc.setVisible(false);
         studentiPoc.setVisible(false);
+        
+        
+        
+        
         
         while ( result1.next() ) {        
 
