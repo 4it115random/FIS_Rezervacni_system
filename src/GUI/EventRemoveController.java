@@ -107,7 +107,9 @@ public class EventRemoveController implements Initializable {
         //prikaz na zmazanie z DB
         PreparedStatement removeEvent = conn.prepareStatement("DELETE FROM udalost WHERE udalost_id = ?");
         removeEvent.setInt(1, eventSelected.getID());      
-                
+        PreparedStatement removeTickets = conn.prepareStatement("DELETE FROM koupene_listky WHERE udalost_id = ?");
+        removeTickets.setInt(1, eventSelected.getID());
+        
         //Zobrazeni alertu o potvrzeni zmazani                
         ButtonType anoButt = new ButtonType("Smazat");
         ButtonType nieButt = new ButtonType("Storno");
@@ -117,6 +119,7 @@ public class EventRemoveController implements Initializable {
             if (response == anoButt) {
                 try {
                     removeEvent.executeUpdate();
+                    removeTickets.executeUpdate();
                     Alert a = new Alert(Alert.AlertType.CONFIRMATION);
                     a.setTitle("Úspěch");
                     a.setHeaderText("Zmazání proběhlo v pořádku");
